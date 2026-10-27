@@ -23,6 +23,7 @@ class Profile:
     collection_lag: int = 0     # months between billing and cash arriving
     horizon: int = 12
     receivables: list = field(default_factory=list)
+    history: list = field(default_factory=list)  # monthly cash history for MC gate
 
 
 @dataclass
