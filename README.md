@@ -20,10 +20,16 @@ TwinFin/
 │       │   └── copilot.py        # Grounded copilot (LLM + offline fallback)
 │       └── tests/
 │           └── test_fintwin.py   # Hand-calculated fixture tests
-├── role_1_frontend_visualization.txt
-├── role_2_ai_demo.txt
-├── role_3_financial_modeling.txt
-├── role_4_optimization_simulation.txt
+├── roles/                       # Role assignment files
+│   ├── role_1_frontend_visualization.txt
+│   ├── role_2_ai_demo.txt
+│   ├── role_3_financial_modeling.txt
+│   └── role_4_optimization_simulation.txt
+├── todos/                       # Per-role to-do lists
+│   ├── todo_role_1_data_risk.txt
+│   ├── todo_role_2_plans.txt
+│   ├── todo_role_3_uncertainty_lab.txt
+│   └── todo_role_4_product_story.txt
 └── README.md                     # This file
 ```
 
@@ -78,7 +84,7 @@ The project is split into 4 vertical slices. Each owner owns their engine functi
 | C: Uncertainty & Lab | Stress and live what-if | Scenario Lab, sliders, toggle | Monte Carlo, vectorized simulate, sensitivity | explain_scenario |
 | D: Product & Story | Shell, glue, delivery | App shell, navigation, memo, copilot | case state, contract, integration tests | memo + copilot from A–C functions |
 
-See the `role_*.txt` files for detailed phase breakdowns.
+See the `roles/role_*.txt` files for detailed phase breakdowns.
 
 ## Shared Contract
 
