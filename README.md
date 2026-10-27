@@ -30,6 +30,15 @@ TwinFin/
 │   ├── todo_role_2_plans.txt
 │   ├── todo_role_3_uncertainty_lab.txt
 │   └── todo_role_4_product_story.txt
+├── FinTwin_AI/                   # Tagged-input financial modeling module
+│   ├── app.py                    # Streamlit data-review and forecast interface
+│   ├── cashflow.py               # Deterministic cash-flow projection
+│   ├── data.py                   # Tagged models, validation, CSV suggestions
+│   ├── risk.py                   # Reserve breach and counterfactual analysis
+│   ├── scenarios.py              # Scenario helpers
+│   ├── prediction.py             # Historical payment-delay estimate
+│   └── tests/
+│       └── test_cashflow.py      # Hand-calculated cash-flow tests
 └── README.md                     # This file
 ```
 
@@ -51,6 +60,20 @@ python -m streamlit run app.py
 ```
 
 The dashboard will be available at http://localhost:8501.
+
+## Tagged-Input Financial Model
+
+The `FinTwin_AI` module is a separate, directly runnable model. From the repository root:
+
+```bash
+python -m pip install -r FinTwin_AI/requirements.txt
+python -m pytest FinTwin_AI/tests -q
+python -m streamlit run FinTwin_AI/app.py
+```
+
+Uploaded CSV classifications are suggestions and are not automatically included in forecasts.
+Strict mode counts confirmed receipts only; expected receipts can be included by switching off
+strict mode in the interface.
 
 ## Optional: LLM Copilot
 
