@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import replace
 
-from FinTwin_AI.data import Scenario, Tagged
+from data import Scenario, Tagged
 
 
 def with_payment_delay(scenario: Scenario, months: int) -> Scenario:

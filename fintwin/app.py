@@ -6,8 +6,8 @@ from dataclasses import replace
 
 import streamlit as st
 
-from FinTwin_AI.cashflow import forecast
-from FinTwin_AI.data import (
+from cashflow import forecast
+from data import (
     Inflow,
     Loan,
     Plan,
@@ -16,8 +16,8 @@ from FinTwin_AI.data import (
     parse_csv_rows,
     validate_profile,
 )
-from FinTwin_AI.risk import assess_risk
-from FinTwin_AI.scenarios import baseline_scenario
+from risk import assess_risk
+from scenarios import baseline_scenario
 
 
 def tagged(value, source: str, tag: str = "user_input"):

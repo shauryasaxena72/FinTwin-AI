@@ -1,14 +1,11 @@
-"""Bridge between FinTwin_AI (tagged model) and fintwin_prototype (engine model).
+"""Bridge between tagged model (data.py) and engine model (engine.py).
 
 Converts between the two data models so both modules can work together.
 """
 from __future__ import annotations
 
-import sys, os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "fintwin_prototype", "fintwin"))
-
-from fintwin.engine import Profile as FTProfile, Plan as FTPlan, Scenario as FTScenario, Decision as FTDecision, Receivable, Receivable
-from FinTwin_AI.data import Profile as TAProfile, Plan as TAPlan, Scenario as TAScenario, Tagged, Inflow, Loan
+from engine import Profile as FTProfile, Plan as FTPlan, Scenario as FTScenario, Decision as FTDecision, Receivable
+from data import Profile as TAProfile, Plan as TAPlan, Scenario as TAScenario, Tagged, Inflow, Loan
 
 
 def _tagged_val(tagged, default=None):

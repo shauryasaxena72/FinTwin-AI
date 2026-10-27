@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from dataclasses import replace
 
-from FinTwin_AI.cashflow import forecast
-from FinTwin_AI.data import Plan, Profile, Scenario
+from cashflow import forecast
+from data import Plan, Profile, Scenario
 
 
 def assess_risk(

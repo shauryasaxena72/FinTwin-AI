@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from FinTwin_AI.data import Plan, Profile, Scenario, validate_profile
+from data import Plan, Profile, Scenario, validate_profile
 
 
 @dataclass(frozen=True)

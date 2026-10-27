@@ -6,47 +6,48 @@ A financial decision-support system that helps small businesses understand wheth
 
 ```
 TwinFin/
-├── fintwin_prototype/
-│   └── fintwin/
-│       ├── app.py                 # Streamlit dashboard
-│       ├── demo.py                # CLI demo
-│       ├── requirements.txt      # Python dependencies
-│       ├── README.md             # Prototype-specific docs
-│       ├── fintwin/              # Core engine package
-│       │   ├── __init__.py
-│       │   ├── engine.py         # Profile, Decision, Scenario, diagnose
-│       │   ├── montecarlo.py     # Monte Carlo simulation
-│       │   ├── planner.py        # Plan generation, filtering, ranking
-│       │   └── copilot.py        # Grounded copilot (LLM + offline fallback)
-│       └── tests/
-│           └── test_fintwin.py   # Hand-calculated fixture tests
-├── roles/                       # Role assignment files
+├── fintwin/                    # Unified FinTwin AI package
+│   ├── __init__.py             # Package exports
+│   ├── data.py                 # Tagged inputs, CSV ingestion, validation
+│   ├── cashflow.py             # Deterministic cash-flow projection
+│   ├── risk.py                 # Risk detection, TEMPORARY/PERSISTENT, counterfactuals
+│   ├── scenarios.py            # Scenario construction helpers
+│   ├── prediction.py           # Historical payment-delay estimate
+│   ├── engine.py               # Profile, Plan, Scenario, forecast, risk_report, diagnose
+│   ├── simulate.py             # Vectorized Monte Carlo simulation
+│   ├── generate.py             # Candidate plan generator + hard filters
+│   ├── rank.py                 # Pareto ranking
+│   ├── montecarlo.py           # Monte Carlo with history gate, 95% CI
+│   ├── planner.py              # Backward-compat shim
+│   ├── copilot.py              # Grounded copilot (LLM + offline fallback)
+│   ├── bridge.py               # Bridge between tagged and engine models
+│   ├── app.py                  # Streamlit dashboard
+│   ├── demo.py                 # CLI demo
+│   ├── requirements.txt        # Python dependencies
+│   └── tests/
+│       ├── test_fintwin.py     # Engine tests (10 tests)
+│       └── test_cashflow.py    # Cash flow tests (6 tests)
+├── roles/                      # Role assignment files
 │   ├── role_1_frontend_visualization.txt
 │   ├── role_2_ai_demo.txt
 │   ├── role_3_financial_modeling.txt
 │   └── role_4_optimization_simulation.txt
-├── todos/                       # Per-role to-do lists
+├── todos/                      # Per-role to-do lists
 │   ├── todo_role_1_data_risk.txt
 │   ├── todo_role_2_plans.txt
 │   ├── todo_role_3_uncertainty_lab.txt
 │   └── todo_role_4_product_story.txt
-├── FinTwin_AI/                   # Tagged-input financial modeling module
-│   ├── app.py                    # Streamlit data-review and forecast interface
-│   ├── cashflow.py               # Deterministic cash-flow projection
-│   ├── data.py                   # Tagged models, validation, CSV suggestions
-│   ├── risk.py                   # Reserve breach and counterfactual analysis
-│   ├── scenarios.py              # Scenario helpers
-│   ├── prediction.py             # Historical payment-delay estimate
-│   └── tests/
-│       └── test_cashflow.py      # Hand-calculated cash-flow tests
-└── README.md                     # This file
+├── README.md
+├── TODO.md
+├── .gitignore
+└── LICENSE
 ```
 
 ## Quick Start
 
 ```bash
 # 1. Install dependencies
-cd fintwin_prototype/fintwin
+cd fintwin
 pip install -r requirements.txt
 
 # 2. Run tests

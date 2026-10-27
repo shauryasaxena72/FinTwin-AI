@@ -1,6 +1,6 @@
 from dataclasses import replace
 
-from FinTwin_AI.data import (
+from data import (
     Inflow,
     Loan,
     Plan,
@@ -10,9 +10,9 @@ from FinTwin_AI.data import (
     parse_csv_rows,
     validate_month_coverage,
 )
-from FinTwin_AI.cashflow import forecast
-from FinTwin_AI.risk import assess_risk
-from FinTwin_AI.scenarios import baseline_scenario, with_payment_delay, with_revenue_drop
+from cashflow import forecast
+from risk import assess_risk
+from scenarios import baseline_scenario, with_payment_delay, with_revenue_drop
 
 
 def t(value, tag="fixture", source="hand-calculated fixture"):
