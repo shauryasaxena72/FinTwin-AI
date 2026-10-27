@@ -29,14 +29,34 @@ st.title("FinTwin AI — cash-flow twin")
 st.caption("Forecasts are decision support, not financial advice. Uploaded rows are never auto-trusted.")
 
 with st.sidebar:
-    st.header("Cash assumptions")
-    opening_cash = st.number_input("Opening cash", min_value=0.0, value=10000.0)
-    reserve = st.number_input("Minimum reserve", min_value=0.0, value=3000.0)
-    monthly_opex = st.number_input("Monthly operating expenses", min_value=0.0, value=4000.0)
-    horizon = st.number_input("Forecast months", min_value=1, max_value=36, value=6)
-    loan_payment = st.number_input("Monthly loan payment", min_value=0.0, value=0.0)
-    revenue_drop = st.slider("Revenue drop (%)", min_value=0, max_value=100, value=0)
-    delay_months = st.number_input("Payment delay (months)", min_value=0, max_value=12, value=0)
+    st.header("Sample data")
+    sample = st.selectbox("Load sample scenario", ["Manual", "Green (Healthy)", "Red (Stressed)", "Mixed (Borderline)"])
+
+    SAMPLES = {
+        "Green (Healthy)": {"opening_cash": 200000.0, "reserve": 30000.0, "monthly_opex": 50000.0, "horizon": 6, "loan_payment": 8000.0, "revenue_drop": 0, "delay_months": 0},
+        "Red (Stressed)": {"opening_cash": 50000.0, "reserve": 30000.0, "monthly_opex": 40000.0, "horizon": 6, "loan_payment": 8000.0, "revenue_drop": 20, "delay_months": 2},
+        "Mixed (Borderline)": {"opening_cash": 100000.0, "reserve": 30000.0, "monthly_opex": 45000.0, "horizon": 6, "loan_payment": 8000.0, "revenue_drop": 10, "delay_months": 1},
+    }
+
+    if sample in SAMPLES:
+        s = SAMPLES[sample]
+        opening_cash = s["opening_cash"]
+        reserve = s["reserve"]
+        monthly_opex = s["monthly_opex"]
+        horizon = s["horizon"]
+        loan_payment = s["loan_payment"]
+        revenue_drop = s["revenue_drop"]
+        delay_months = s["delay_months"]
+        st.info(f"Loaded {sample} sample. Adjust values below or run forecast.")
+    else:
+        opening_cash = st.number_input("Opening cash", min_value=0.0, value=10000.0)
+        reserve = st.number_input("Minimum reserve", min_value=0.0, value=3000.0)
+        monthly_opex = st.number_input("Monthly operating expenses", min_value=0.0, value=4000.0)
+        horizon = st.number_input("Forecast months", min_value=1, max_value=36, value=6)
+        loan_payment = st.number_input("Monthly loan payment", min_value=0.0, value=0.0)
+        revenue_drop = st.slider("Revenue drop (%)", min_value=0, max_value=100, value=0)
+        delay_months = st.number_input("Payment delay (months)", min_value=0, max_value=12, value=0)
+
     strict = st.toggle("Strict mode: confirmed receipts only", value=True)
 
 st.subheader("Upload data for review")
