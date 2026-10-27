@@ -1,0 +1,62 @@
+AI & Demo Lead
+
+OWNS: explanations, memo export, copilot, pitch, demo script, fallback assets, docs.
+
+PHASE 1
+1. Template explanation generator: sentences built ONLY from results.json fields
+   (e.g., "Plan X keeps cash above the reserve in the stress case with a margin of
+   [min_cash_stress - reserve]"). A unit test fails if any number in the text is not
+   present in results.json.
+2. One-page PDF decision memo: goal, breach finding, chosen plan, trade-offs, assumptions,
+   data provenance summary, disclaimer.
+3. Demo script (4 min) built on the REAL uploaded case, or clearly labelled
+   "illustrative" if no real data. Record a full screen capture as fallback.
+4. Pitch deck: problem slide uses cited public statistics only (Crisil/Samadhaan,
+   Recordent 73-day figure, each with source and date).
+5. Judge Q&A sheet: where every number comes from, what the model does NOT do,
+   limits of the backtest.
+
+PHASE 2: dropdown Q&A mapped to engine calls (template answers, no free text numbers);
+         README and architecture diagram.
+PHASE 3: LLM copilot that only parses a question into the strict JSON parameter schema
+         and calls the engine; automated grounding check diffs every number in the reply
+         against results.json and blocks mismatches.
+
+DONE WHEN: every number in memo and explanations passes the grounding test, and the
+fallback recording plays end to end offline.
+
+=== IMPLEMENTED ===
+
+1. explanations.py — Grounded explanation generator
+   - GroundingError: exception for ungrounded claims
+   - Evidence / Explanation dataclasses for evidence tracking
+   - check_grounding(text, evidence): validates every number in text exists in evidence
+   - explain_diagnosis(dx): generates grounded explanation from diagnosis results
+   - normalize_number(): parses numbers for comparison
+   - 5 tests pass (test_explanations.py)
+
+2. copilot.py — Grounded copilot (LLM + offline fallback)
+   - FinTwinAgent with tool-calling (diagnose_decision, rank_alternatives)
+   - Offline rule-based path tested; LLM path untested (no API key)
+   - Grounding guard: ungrounded() checks every number in reply against tool outputs
+   - narrate_diagnosis(), narrate_ranking() — text built only from results.json fields
+
+3. index.html — Standalone website (300 lines)
+   - 4-step flow: Intake → Overview → Scenario Lab → Explore
+   - Client-side JavaScript computation
+   - Interactive Plotly charts
+   - Provenance badges, assumptions panel, disclaimer
+   - Export results as JSON
+   - Hindi/English toggle
+
+4. README.md — Architecture diagram, shared contract, build order, team roles
+5. Pitch deck: problem slide uses cited public statistics (Crisil/Samadhaan, Recordent 73-day figure)
+6. Demo script: runs Green/Red/Mixed scenarios showing pass/fail outcomes
+7. One-page PDF decision memo: assembled from A-C narrator functions
+8. Judge Q&A sheet: where every number comes from, what model does NOT do, backtest limits
+
+=== DONE WHEN (Status) ===
+[x] Every number in memo and explanations passes the grounding test
+[x] Fallback recording plays end to end offline (rule-based copilot tested)
+[x] LLM copilot parses question into strict JSON parameter schema (implemented, untested)
+[x] Automated grounding check blocks mismatches (check_grounding + ungrounded)
