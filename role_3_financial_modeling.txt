@@ -1,0 +1,26 @@
+Financial Modeling Lead
+
+OWNS: engine/model.py, engine/ingest.py, engine/risk.py, tests of the cash equations.
+
+PHASE 1
+1. Dataclasses: Profile, Inflow(status confirmed|expected), Loan, Plan, Scenario;
+   every field is a Tagged(value, tag, source).
+2. Ingest: parse bank statement + invoices, rule-based row classification
+   (revenue / opex / loan / other), flag ambiguous rows for user review. Never auto-trust.
+3. Cash-flow equation per the shared convention; receipts shifted to actual or
+   expected pay date; strict mode counts only confirmed receipts.
+4. Risk detection: first breach month, max shortfall, TEMPORARY vs PERSISTENT, runway.
+5. Cause attribution by counterfactual: remove each driver (purchase, shock, revenue
+   drop, delay) one at a time and report which removals clear the breach.
+6. Unit tests: hand-calculated cases from the proposal live in tests/fixtures/ only,
+   never shown in the UI.
+7. Input validation (negatives, reserve above cash, missing months) with plain-language errors.
+
+PHASE 2: per-customer delay model from paid invoices; late-payment interest exposure under
+         the MSMED Act rule (3x RBI bank rate; cite it); walk-forward backtest
+         (forecast t+1..t+3 vs actual, report error honestly).
+PHASE 3: seasonality, weekly granularity, household mode, AA sandbox ingestion labelled
+         "sandbox data".
+
+DONE WHEN: all fixture tests pass, and a real uploaded history reproduces the user's own
+bank balances within the statement's own figures.

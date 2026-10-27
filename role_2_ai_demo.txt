@@ -1,0 +1,26 @@
+AI & Demo Lead
+
+OWNS: explanations, memo export, copilot, pitch, demo script, fallback assets, docs.
+
+PHASE 1
+1. Template explanation generator: sentences built ONLY from results.json fields
+   (e.g., "Plan X keeps cash above the reserve in the stress case with a margin of
+   [min_cash_stress - reserve]"). A unit test fails if any number in the text is not
+   present in results.json.
+2. One-page PDF decision memo: goal, breach finding, chosen plan, trade-offs, assumptions,
+   data provenance summary, disclaimer.
+3. Demo script (4 min) built on the REAL uploaded case, or clearly labelled
+   "illustrative" if no real data. Record a full screen capture as fallback.
+4. Pitch deck: problem slide uses cited public statistics only (Crisil/Samadhaan,
+   Recordent 73-day figure, each with source and date).
+5. Judge Q&A sheet: where every number comes from, what the model does NOT do,
+   limits of the backtest.
+
+PHASE 2: dropdown Q&A mapped to engine calls (template answers, no free text numbers);
+         README and architecture diagram.
+PHASE 3: LLM copilot that only parses a question into the strict JSON parameter schema
+         and calls the engine; automated grounding check diffs every number in the reply
+         against results.json and blocks mismatches.
+
+DONE WHEN: every number in memo and explanations passes the grounding test, and the
+fallback recording plays end to end offline.

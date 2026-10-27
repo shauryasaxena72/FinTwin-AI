@@ -1,0 +1,28 @@
+Optimization & Simulation Engineer
+
+OWNS: engine/simulate.py, generate.py, rank.py, montecarlo.py.
+
+PHASE 1
+1. Vectorized simulate(plan, scenario, profile) over many paths with NumPy
+   (no Python loops over paths).
+2. Candidate generator: grid over purchase month, deposit %, opex cut %, collection
+   acceleration, conditional-trigger plans. A plan type exists only if its real input
+   (vendor quote, loan offer) was provided.
+3. Hard filters with machine-readable reject_reason: base closing >= reserve every month,
+   loan/payroll paid, goal achieved by deadline.
+4. Metrics for survivors: min cash under base and stress, delay months, extra cost
+   (from real quotes), breach probability if Monte Carlo is enabled.
+5. Pareto front on (delay, cost, breach probability); labels Fastest safe / Safest / Cheapest.
+6. Monte Carlo: bootstrap residuals and delays from the user's own history; ENABLED only
+   with sufficient history (suggested gate 12 months, documented as a design choice);
+   fixed seed, common random numbers across plans, report N, seed, 95% CI;
+   use N=5000 so the standard error is about 0.7 pp.
+7. Performance: re-simulation after any input change under 1 second.
+8. Tests: same seed gives identical output; different seeds agree within the CI.
+
+PHASE 2: sensitivity analysis (tornado data), richer plan combinations, runtime profiling.
+PHASE 3: MILP/OR-Tools for larger plan spaces, keeping brute force + Pareto as the
+         verified baseline to compare against.
+
+DONE WHEN: results.json from your code drives the full UI with no changes needed, and
+every plan marked feasible passes all hard constraints in an independent check.

@@ -1,0 +1,24 @@
+Frontend & Visualization Developer
+
+OWNS: app/streamlit_app.py, Plotly charts, all screens. Never computes finance numbers.
+
+PHASE 1
+1. Data intake screen: upload bank_statement.csv + invoices.csv, forms for vendor quote
+   and loan offer, row-classification review table the user must confirm.
+2. Financial Overview: tiles for cash, monthly surplus, reserve, runway (from results.json).
+3. Digital Twin + Scenario Lab (hero): original vs selected plans, horizontal reserve line,
+   p10-p90 Monte Carlo fan ONLY if mc.enabled, breach months marked, hover shows
+   opening/inflow/outflow/closing.
+4. Stress controls: revenue drop, payment delay, shock amount+month. Every change calls
+   the engine and re-renders in under 1 second (cache by input hash).
+5. Plan cards: Fastest safe / Safest / Cheapest, plus a collapsible "Rejected plans and why".
+6. Confirmed vs expected toggle: expected inflows drawn hatched; ranking updates on flip.
+7. Provenance badge on every number; Assumptions panel; disclaimer footer.
+8. Empty/insufficient-data states: show exactly what is missing (no fake placeholders).
+
+PHASE 2: Pareto explorer scatter, tornado sensitivity chart, scenario save/compare,
+         backtest dashboard (forecast vs actual).
+PHASE 3: Hindi/English toggle, mobile layout, deployment, offline fallback bundle.
+
+DONE WHEN: a stranger loads real files and reaches a ranked plan list in under 3 minutes
+without help; no untagged number is on screen.
