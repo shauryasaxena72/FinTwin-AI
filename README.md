@@ -103,12 +103,12 @@ All roles read from a single `results.json` object. Key fields:
 |---|---|
 | 0–3 | D publishes contract, Case state, ui_kit, stub results.json. A, B, C each add a screen reading the stub. |
 | 3–6 | Walking skeleton: upload → stub → plan cards → lab → memo all render and connect. |
-| 6–15 | Each owner replaces stub with real engine function, merging daily. |
-| 15–20 | Full real-data loop; D runs click-through checklist. |
-| 20–27 | Monte Carlo and toggle land, polish, copilot v1. |
-| 27–30 | Bugfix, fallback recording, rehearse. |
+| 6–12 | Each owner replaces stub with real engine function, merging daily. |
+| 12–16 | Full real-data loop; D runs click-through checklist. |
+| 16–20 | Monte Carlo and toggle land, polish, copilot v1. |
+| 20–24 | Bugfix, fallback recording, rehearse. |
 
-Sync points at hours 6, 15, and 20: all four sit together, run the full loop on one real file, fix whatever breaks.
+Sync points at hours 6, 12, and 16: all four sit together, run the full loop on one real file, fix whatever breaks.
 
 **Pairing for review:** A reviews B, B reviews A (data to plans). C reviews D, D reviews C (lab to story). Nobody merges into `main` without a buddy who has run it.
 
