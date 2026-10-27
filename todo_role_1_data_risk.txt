@@ -1,0 +1,33 @@
+# Owner A: Data & Risk — To Do List
+
+## Done
+- [x] Role assignment file created (role_1_frontend_visualization.txt)
+
+## To Do
+
+### Phase 1 — Core Data & Risk (Hours 0–15)
+- [ ] Create `engine/ingest.py` — parse bank statement + invoices, rule-based row classification (revenue/opex/loan/other), flag ambiguous rows for user review
+- [ ] Create `engine/model.py` — dataclasses: Profile, Inflow(status confirmed|expected), Loan, Plan, Scenario; every field is a Tagged(value, tag, source)
+- [ ] Create `engine/risk.py` — first breach month, max shortfall, TEMPORARY vs PERSISTENT, runway
+- [ ] Implement cash-flow equation: receipts at actual/expected pay date, strict mode counts only confirmed receipts
+- [ ] Cause attribution by counterfactual: remove each driver (purchase, shock, revenue drop, delay) one at a time, report which removals clear the breach
+- [ ] Intake screen: upload bank_statement.csv + invoices.csv, forms for vendor quote and loan offer, row-classification review table user must confirm
+- [ ] Overview screen: tiles for cash, monthly surplus, reserve, runway (from results.json)
+- [ ] Risk card screen: breach month markers clickable (sets selected_month), cause panel opens for that month
+- [ ] Unit tests: hand-calculated cases in tests/fixtures/ only, never shown in UI
+- [ ] Input validation (negatives, reserve above cash, missing months) with plain-language errors
+
+### Phase 2 (Hours 15–20)
+- [ ] Per-customer delay model from paid invoices
+- [ ] Late-payment interest exposure under MSMED Act rule (3x RBI bank rate; cite it)
+- [ ] Walk-forward backtest (forecast t+1..t+3 vs actual, report error honestly)
+
+### Phase 3 (Hours 20–24)
+- [ ] Seasonality, weekly granularity, household mode
+- [ ] AA sandbox ingestion labelled "sandbox data"
+
+### Done When
+- [ ] All fixture tests pass
+- [ ] Real uploaded history reproduces the user's own bank balances within the statement's own figures
+- [ ] Breach month markers clickable and set selected_month
+- [ ] Risk card text comes only from narrator (explain_risk)

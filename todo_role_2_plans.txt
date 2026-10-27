@@ -1,0 +1,33 @@
+# Owner B: Plans — To Do List
+
+## Done
+- [x] Role assignment file created (role_2_ai_demo.txt)
+
+## To Do
+
+### Phase 1 — Plan Generation & Ranking (Hours 0–15)
+- [ ] Create `engine/generate.py` — candidate generator: grid over purchase month, deposit %, opex cut %, collection acceleration, conditional-trigger plans
+- [ ] A plan type exists only if its real input (vendor quote, loan offer) was provided
+- [ ] Hard filters with machine-readable reject_reason: base closing >= reserve every month, loan/payroll paid, goal achieved by deadline
+- [ ] Create `engine/rank.py` — Pareto front on (delay, cost, breach probability); labels Fastest safe / Safest / Cheapest
+- [ ] Metrics for survivors: min cash under base and stress, delay months, extra cost (from real quotes), breach probability if MC enabled
+- [ ] Plan cards screen: Fastest safe / Safest / Cheapest, plus collapsible "Rejected plans and why"
+- [ ] "Rejected and why" list with machine-readable reject_reason
+- [ ] Clicking a card sets selected_plan, which drives Scenario Lab and memo
+- [ ] explain_plan() and explain_rejection() narrator functions
+
+### Phase 2 (Hours 15–20)
+- [ ] Pareto explorer scatter
+- [ ] Tornado sensitivity chart (data from Owner C)
+- [ ] Richer plan combinations
+- [ ] Runtime profiling
+
+### Phase 3 (Hours 20–24)
+- [ ] MILP/OR-Tools for larger plan spaces
+- [ ] Keep brute force + Pareto as verified baseline to compare against
+
+### Done When
+- [ ] results.json from code drives full UI with no changes needed
+- [ ] Every plan marked feasible passes all hard constraints in an independent check
+- [ ] Clicking a plan card sets selected_plan and updates Scenario Lab + memo
+- [ ] explain_plan() and explain_rejection() built only from results.json fields

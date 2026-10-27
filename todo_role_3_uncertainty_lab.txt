@@ -1,0 +1,35 @@
+# Owner C: Uncertainty & Lab — To Do List
+
+## Done
+- [x] Role assignment file created (role_3_financial_modeling.txt)
+
+## To Do
+
+### Phase 1 — Simulation & Monte Carlo (Hours 0–15)
+- [ ] Create `engine/simulate.py` — vectorized simulate(plan, scenario, profile) over many paths with NumPy (no Python loops over paths)
+- [ ] Create `engine/montecarlo.py` — bootstrap residuals and delays from user's own history
+- [ ] MC ENABLED only with sufficient history (suggested gate 12 months, documented as design choice)
+- [ ] Fixed seed, common random numbers across plans, report N, seed, 95% CI
+- [ ] Use N=5000 so standard error is ~0.7 pp
+- [ ] Stress controls: revenue drop, payment delay, shock amount+month
+- [ ] Every change calls engine and re-renders in under 1 second (cache by input hash)
+- [ ] Confirmed vs expected toggle: expected inflows drawn hatched; ranking updates on flip
+- [ ] Scenario Lab chart: original vs selected plans, horizontal reserve line, p10-p90 MC fan ONLY if mc.enabled, breach months marked, hover shows opening/inflow/outflow/closing
+- [ ] If MC disabled, chart says why instead of drawing a fake band
+- [ ] explain_scenario() narrator function
+
+### Phase 2 (Hours 15–20)
+- [ ] Sensitivity analysis (tornado data)
+- [ ] Richer plan combinations
+- [ ] Runtime profiling
+
+### Phase 3 (Hours 20–24)
+- [ ] Seasonality, weekly granularity
+- [ ] Household mode
+
+### Done When
+- [ ] results.json drives full UI with no changes needed
+- [ ] Same seed gives identical output; different seeds agree within CI
+- [ ] Re-simulation after any input change under 1 second
+- [ ] explain_scenario() built only from results.json fields
+- [ ] If MC disabled, chart explains why instead of drawing fake band

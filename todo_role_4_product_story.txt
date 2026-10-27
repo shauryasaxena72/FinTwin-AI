@@ -1,0 +1,35 @@
+# Owner D: Product & Story — To Do List
+
+## Done
+- [x] Role assignment file created (role_4_optimization_simulation.txt)
+
+## To Do
+
+### Phase 1 — Shell, Glue, Delivery (Hours 0–15)
+- [ ] Publish `results.json` contract as formal schema (engine/contract.py dataclasses)
+- [ ] Create `Case` state in `st.session_state["case"]` with `profile`, `scenario`, `results`, `selected_plan`, `selected_month`
+- [ ] Build `ui_kit.py` — theme, provenance badge, plan card, chart helpers
+- [ ] Create `narrator.py` skeleton with function signatures (explain_risk, explain_plan, explain_rejection, explain_scenario)
+- [ ] Create stub `results.json` so all screens render on day one
+- [ ] App shell + navigation
+- [ ] Integration tests: upload → risk → plans → lab → memo on every merge
+- [ ] One-page PDF decision memo assembled from A-C narrator functions
+- [ ] Copilot v1: dropdown questions mapped to engine calls, text from narrator only
+- [ ] Demo script and fallback recording
+- [ ] Pitch deck with cited statistics only (Crisil/Samadhaan, Recordent 73-day figure, each with source and date)
+- [ ] Judge Q&A sheet: where every number comes from, what the model does NOT do, limits of backtest
+
+### Phase 2 (Hours 15–20)
+- [ ] README and architecture diagram
+- [ ] Dropdown Q&A mapped to engine calls (template answers, no free text numbers)
+
+### Phase 3 (Hours 20–24)
+- [ ] LLM copilot that only parses question into strict JSON parameter schema
+- [ ] Automated check that blocks any reply whose numbers aren't in results.json
+
+### Done When
+- [ ] Contract, ui_kit, narrator.py structure, integration tests, demo all shipped
+- [ ] Every number in memo and explanations passes grounding test
+- [ ] Fallback recording plays end to end offline
+- [ ] Click-through checklist maintained and run at every sync
+- [ ] "Does clicking here update there" verified for all screens
