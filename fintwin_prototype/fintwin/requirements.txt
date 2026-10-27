@@ -1,6 +1,0 @@
-numpy
-plotly
-streamlit
-pandas
-pytest
-anthropic  # optional: LLM copilot (set ANTHROPIC_API_KEY)
