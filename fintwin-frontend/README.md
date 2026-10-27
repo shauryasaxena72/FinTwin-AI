@@ -1,10 +1,10 @@
-# FinTwin AI — React Frontend (Phase 1)
+# FinTwin AI — React Frontend
 
-Dark, responsive React + Vite frontend for FinTwin AI. This folder is designed to be added to the existing repository without replacing the existing Python engine, tests, proposal, role files, or prototype.
+Responsive React + Vite dashboard for FinTwin AI. This folder lives alongside the existing Python engine and prototype.
 
 ## Current behavior and honest limitations
 
-- Starts on Data Intake and does not preload financial results.
+- Starts on the business overview and does not preload financial results.
 - Accepts a bank statement CSV and invoices CSV, then shows imported rows for explicit classification and confirmation.
 - Includes vendor quote and loan offer fields. Blank values remain blank; the browser does not calculate loan costs or financial metrics.
 - Overview, Digital Twin, Scenario Lab, plan explorer, and grounded copilot are implemented with empty states when engine results are missing.
@@ -21,9 +21,8 @@ Dark, responsive React + Vite frontend for FinTwin AI. This folder is designed t
 ## Run locally
 
 ```bash
-cd frontend
-copy .env.example .env
-npm install
+cd fintwin-frontend
+npm ci
 npm run dev
 ```
 
@@ -101,35 +100,14 @@ The numeric zeros above document the *shape only*; they are not seeded values. D
 
 These routes are proposals only. They are not confirmed to exist in the current repository.
 
-## Git safety workflow
+## Public deployment
 
-From the repository root, first inspect changes and create a branch. Never use `git reset --hard`, `git clean -fd`, or overwrite existing folders as part of this setup.
+The repository deploys this frontend to GitHub Pages from `master` using `.github/workflows/deploy-frontend.yml`. Vite is configured for the repository URL prefix.
 
-```bash
-git status --short
-git branch --show-current
-git pull --ff-only origin master
-git switch -c feat/react-phase1-frontend
-```
+After the Pages workflow completes, the public dashboard URL is:
+https://shauryasaxena72.github.io/FinTwin-AI/
 
-Then copy this folder into the repository as `frontend/`. Check the diff before staging:
-
-```bash
-git status --short
-git diff --stat
-git diff --check
-```
-
-Commit only the new frontend files:
-
-```bash
-git add frontend
-git diff --cached --stat
-git commit -m "Add React FinTwin Phase 1 frontend"
-git push -u origin feat/react-phase1-frontend
-```
-
-Open a pull request if the team uses PR review. If the team commits to `main` rather than `master`, substitute the actual default branch. If `git status` shows teammate changes, do not discard them; coordinate before pulling or merging.
+The GitHub repository must have Pages enabled with the source set to **GitHub Actions**. The first deployment may require an administrator to enable this in **Settings → Pages**.
 
 ## Main files
 
@@ -138,4 +116,4 @@ Open a pull request if the team uses PR review. If the team commits to `main` ra
 - `src/components/Plot.jsx` — Plotly cash-flow visualization (only renders a chart when engine data exists)
 - `src/components/Sidebar.jsx` — navigation and product shell
 - `src/services/api.js` — isolated backend adapter placeholders
-- `src/styles.css` — responsive dark fintech design system
+- `src/styles.css` — responsive fintech design system
