@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en" data-theme="light"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FinTwin</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&family=Noto+Sans+Devanagari:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.35.2/plotly.min.js"></script>
+<style>
+:root{--bg:#f8f5ee;--fg:#1f2630;--card:#fdfbf6;--mut:#6b7380;--bd:#ddd7c8;--pri:#1d6b58;--pri-fg:#fff;--warn:#d98b1f;--ok:#2f8a5b;--bad:#c93d2f;--c2:#d0702a;--c3:#2e4e9a;--c4:#b0489a;--sec:#ece7da;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14181f;--fg:#ece8dd;--card:#1c222b;--mut:#9aa3b0;--bd:#2d3643;--pri:#4cc2a1;--pri-fg:#0d1511;--sec:#252d38;--bad:#ef6b5c;--c3:#7b9cf0;--c4:#d97cc6}}
+:root[data-theme="dark"]{--bg:#14181f;--fg:#ece8dd;--card:#1c222b;--mut:#9aa3b0;--bd:#2d3643;--pri:#4cc2a1;--pri-fg:#0d1511;--sec:#252d38;--bad:#ef6b5c;--c3:#7b9cf0;--c4:#d97cc6}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 "IBM Plex Sans",system-ui,sans-serif}
+.mono{font-family:"IBM Plex Mono",monospace}.disp{font-family:"Instrument Serif",Georgia,serif;font-weight:400}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--bd);display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:10px 20px}
+header .logo{font-size:26px;text-decoration:none;color:var(--fg)}
+nav a{padding:6px 12px;border-radius:6px;color:var(--mut);text-decoration:none;font-size:14px;font-weight:600}nav a.on{background:var(--sec);color:var(--fg)}
+.st{margin-left:auto;font-size:12px;color:var(--mut)}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+main{max-width:1200px;margin:0 auto;padding:28px 20px}
+.eyebrow{font:600 11px "IBM Plex Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+h1{font-size:44px;margin:2px 0 20px;line-height:1.1}h3{margin:0 0 8px;font-size:16px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:18px;min-width:0}
+.g{display:grid;gap:16px;margin-bottom:16px}.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}.g4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.lab{display:grid;grid-template-columns:270px minmax(0,1fr);gap:16px}@media(max-width:860px){.lab{grid-template-columns:1fr}}
+button,.btn{font:600 14px inherit;font-family:inherit;background:var(--pri);color:var(--pri-fg);border:0;border-radius:7px;padding:8px 14px;cursor:pointer;text-decoration:none;display:inline-block}
+button.o{background:transparent;color:var(--fg);border:1px solid var(--bd)}button:disabled{opacity:.45;cursor:not-allowed}
+input,select{font:inherit;background:var(--bg);color:var(--fg);border:1px solid var(--bd);border-radius:6px;padding:6px 8px;width:100%}
+label{font-size:12px;color:var(--mut);display:block;margin:10px 0 3px}
+.b{font:600 9px "IBM Plex Mono",monospace;border:1px solid currentColor;border-radius:3px;padding:0 4px;margin-left:5px;cursor:help;vertical-align:middle}
+.drop{border:2px dashed var(--bd);border-radius:8px;padding:18px;text-align:center;display:block;cursor:pointer;margin-top:10px;font-size:14px}
+.tw{max-height:380px;overflow:auto;border:1px solid var(--bd);border-radius:8px}table{width:100%;border-collapse:collapse;font-size:13px}th{position:sticky;top:0;background:var(--sec);text-align:left;padding:6px 10px;font-size:11px;text-transform:uppercase}td{padding:4px 10px;border-top:1px solid var(--bd)}
+.big{font-size:28px;font-weight:600}.mut{color:var(--mut);font-size:12px}.row{display:flex;justify-content:space-between;gap:8px;margin:5px 0;font-size:14px}
+.warn{border-left:4px solid var(--warn)}.pick{cursor:pointer;text-align:left;color:var(--fg);background:var(--card);border:1px solid var(--bd);font-weight:400}.pick.on{outline:2px solid var(--pri)}
+.bad{color:var(--bad)}.good{color:var(--ok)}details summary{cursor:pointer;font-weight:600}
+.top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px}
+/* minimal restyle */
+:root{--bg:#f7f6f2;--fg:#1c1c1a;--card:#fcfcfa;--mut:#8a877f;--bd:#e2e0d8;--pri:#1c1c1a;--pri-fg:#f7f6f2;--warn:#b08a3e;--ok:#4f6f52;--bad:#a8402f;--c2:#b4573a;--c3:#5b6b7a;--c4:#a89b7e;--sec:#efede6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121211;--fg:#ecebe6;--card:#181817;--mut:#8f8c84;--bd:#2a2a28;--pri:#ecebe6;--pri-fg:#121211;--sec:#1f1f1d;--c2:#d98a6c;--c3:#8fa3b5;--c4:#bfb08f;--ok:#86a888;--bad:#d9705e;--warn:#cfa955}}
+:root[data-theme="dark"]{--bg:#121211;--fg:#ecebe6;--card:#181817;--mut:#8f8c84;--bd:#2a2a28;--pri:#ecebe6;--pri-fg:#121211;--sec:#1f1f1d;--c2:#d98a6c;--c3:#8fa3b5;--c4:#bfb08f;--ok:#86a888;--bad:#d9705e;--warn:#cfa955}
+body{font:14px/1.65 "DM Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.mono,.eyebrow,.b,.st{font-family:"DM Mono",ui-monospace,monospace}
+.disp{font-family:"Fraunces",Georgia,serif;font-weight:300;letter-spacing:-.02em}
+h1{font-size:52px;font-weight:300;margin:6px 0 32px;letter-spacing:-.025em}
+h3{font-size:15px;font-weight:500;margin-bottom:12px}
+.eyebrow{font-size:10px;font-weight:400;letter-spacing:.22em}
+header{padding:20px 32px;gap:28px}header .logo{font-size:24px;font-weight:300}
+nav a{padding:4px 0;margin-right:18px;border-radius:0;font-weight:400;border-bottom:1px solid transparent}
+nav a.on{background:none;color:var(--fg);border-bottom-color:var(--fg)}
+main{padding:52px 32px}
+.g{gap:20px;margin-bottom:20px}
+.card{border-radius:3px;padding:24px}
+button,.btn{border-radius:2px;font-weight:500;font-size:13px;padding:10px 20px;letter-spacing:.02em}
+button.o{border-color:var(--fg);background:transparent}
+.b{border:0!important;color:var(--mut)!important;font-size:9px;opacity:.75;padding:0 3px}
+.big{font-size:36px;font-weight:300}.big .mono{font-family:"Fraunces",serif;font-weight:300}
+th{font-weight:400;letter-spacing:.12em;font-size:10px;color:var(--mut);background:var(--bg)}
+td{padding:7px 10px}
+.warn{border-left:2px solid var(--warn)}
+input,select{border-radius:2px;background:transparent}
+input[type=range]{accent-color:var(--fg);padding:0}
+.pick.on{outline:1px solid var(--fg)}
+.drop{border-radius:3px}
+.tw{border-radius:3px}
+@media(max-width:600px){h1{font-size:36px}main{padding:32px 18px}header{padding:14px 18px}}
+/* white premium */
+:root{--bg:#fff;--card:#fff;--fg:#0e0e0e;--mut:#80807c;--bd:#ebebe8;--pri:#0e0e0e;--pri-fg:#fff;--sec:#f7f7f5;--c2:#8a6f4d;--c3:#4b5d78;--c4:#9aa0a6;--ok:#3d6b4f;--bad:#b3261e;--warn:#a87a1f;color-scheme:light}
+body{background:#fff;font-family:'DM Sans','Noto Sans Devanagari',system-ui,sans-serif}
+header{background:rgba(255,255,255,.88);backdrop-filter:blur(10px)}
+.card{border-color:var(--bd);border-radius:6px;box-shadow:0 1px 2px rgba(0,0,0,.03),0 14px 32px -20px rgba(0,0,0,.14)}
+button:hover,.btn:hover{opacity:.85}th{background:#fff}aside{position:sticky;top:90px}
+.lang{font:500 12px 'DM Mono',monospace;background:none;color:var(--fg);border:1px solid var(--bd);padding:5px 10px}
+.steps{display:flex;gap:28px;flex-wrap:wrap;margin:-8px 0 24px;font-size:13px;color:var(--mut)}.steps .d{color:var(--fg)}
+.steps i{display:inline-block;width:20px;height:20px;line-height:19px;text-align:center;border:1px solid var(--bd);border-radius:50%;font:11px 'DM Mono',monospace;font-style:normal;margin-right:8px}
+.steps .d i{background:var(--fg);color:#fff;border-color:var(--fg)}.sc{overflow-x:auto}
+.toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:#0e0e0e;color:#fff;padding:10px 18px;border-radius:3px;font-size:13px;z-index:9}
+:lang(hi) h1,:lang(hi) .disp,:lang(hi) .big .mono{font-family:'Noto Sans Devanagari',serif;font-weight:400}
+@media(max-width:860px){aside{position:static!important}}
+/* FinTwin dark emerald */
+:root{--bg:#030604;--card:#0a120d;--fg:#f1f6f2;--mut:#7f9488;--bd:rgba(255,255,255,.08);--gb:rgba(22,199,90,.22);--pri:#16c75a;--pri-fg:#03110a;--sec:#08130c;--c2:#7ee8a8;--c3:#3fb7a4;--c4:#b8c7bd;--ok:#16c75a;--bad:#e5594f;--warn:#d9a63a;color-scheme:dark;
+--rb:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 760 440'><defs><linearGradient id='a' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%2316c75a' stop-opacity='.05'/><stop offset='.55' stop-color='%2316c75a' stop-opacity='.35'/><stop offset='1' stop-color='%230a3d1f' stop-opacity='.7'/></linearGradient><linearGradient id='b' x1='1' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%2316c75a' stop-opacity='.4'/><stop offset='1' stop-color='%2306140a' stop-opacity='.15'/></linearGradient></defs><path d='M760 0C600 10 470 120 480 250C487 340 430 400 330 440C470 420 600 340 640 230C680 120 720 60 760 40Z' fill='url(%23a)'/><path d='M760 120C690 150 640 230 660 320C672 372 640 410 590 440C700 410 760 330 760 250Z' fill='url(%23b)'/><path d='M760 8C610 25 490 135 497 255C503 345 455 405 365 440' fill='none' stroke='%2316c75a' stroke-opacity='.55' stroke-width='1.2'/><path d='M760 52C650 90 560 190 585 290' fill='none' stroke='%237ee8a8' stroke-opacity='.3'/><ellipse cx='620' cy='150' rx='120' ry='56' transform='rotate(-35 620 150)' fill='none' stroke='%2316c75a' stroke-opacity='.25'/></svg>")}
+body{background:#030604;color:var(--fg);font-family:Inter,'Noto Sans Devanagari',system-ui,sans-serif;font-size:14px}
+body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(60% 40% at 88% 0%,rgba(22,199,90,.16),transparent 70%),radial-gradient(45% 40% at 0% 100%,rgba(22,199,90,.08),transparent 70%),radial-gradient(80% 60% at 50% 120%,#06140a,transparent)}
+main{position:relative;isolation:isolate}
+main::before{content:'';position:absolute;top:-20px;right:0;width:760px;max-width:100%;height:440px;z-index:-1;pointer-events:none;background:var(--rb) no-repeat right top/contain;-webkit-mask-image:linear-gradient(#000 45%,transparent);mask-image:linear-gradient(#000 45%,transparent)}
+*{scrollbar-color:#1d3a27 transparent}
+.mono,.st{font-family:Inter,sans-serif;font-variant-numeric:tabular-nums}
+.eyebrow{font:500 11px Inter,sans-serif;letter-spacing:.18em;color:var(--pri)}
+h1,h3,.disp,.big,.big .mono,header .logo{font-family:'Space Grotesk',Inter,sans-serif}
+h1{font-size:50px;font-weight:700;letter-spacing:-.035em;margin:6px 0 32px;background:linear-gradient(180deg,#fff 45%,#8fe8b0);-webkit-background-clip:text;background-clip:text;color:transparent}
+h3{font-weight:500;font-size:15px;letter-spacing:-.01em}
+.disp{font-weight:500;letter-spacing:-.02em}
+.big,.big .mono{font-size:34px;font-weight:600;letter-spacing:-.03em}
+header{background:rgba(3,6,4,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--gb)}
+header .logo{font-size:24px;font-weight:700;color:#fff;letter-spacing:-.03em}header .logo em{font-style:normal;color:var(--pri)}
+nav a{color:var(--mut)}nav a.on{color:#fff;border-bottom-color:var(--pri)}
+.card{background:var(--card);border:1px solid var(--gb);border-radius:14px;box-shadow:0 24px 40px -28px #000;transition:border-color .2s,box-shadow .2s}
+.card:hover{border-color:rgba(22,199,90,.4);box-shadow:0 0 28px -12px rgba(22,199,90,.45),0 24px 40px -28px #000}
+.g4 .card,aside.card{background:rgba(12,30,19,.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 24px 40px -28px #000}
+.card.warn{border-left:2px solid var(--warn);background-image:var(--rb);background-repeat:no-repeat;background-position:right -50px top -40px;background-size:320px}
+.card.bad{border-color:rgba(229,89,79,.45);background:rgba(229,89,79,.06)}
+button,.btn{font-family:inherit;background:transparent;color:var(--pri);border:1px solid var(--pri);border-radius:8px;transition:background .2s,box-shadow .2s}
+button:hover,.btn:hover{opacity:1;background:rgba(22,199,90,.12);box-shadow:0 0 22px -6px rgba(22,199,90,.6)}
+button.o{color:var(--fg);border-color:rgba(255,255,255,.18)}button.o:hover{border-color:var(--pri);background:rgba(22,199,90,.08)}
+button:disabled{opacity:.4}button:focus-visible,.btn:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
+.lang{color:var(--mut);border-color:var(--bd)}
+.pick{background:rgba(12,30,19,.55);border:1px solid var(--gb);color:var(--fg);text-align:left;border-radius:14px}.pick:hover{border-color:var(--pri)}.pick.on{outline:0;border-color:var(--pri);box-shadow:0 0 30px -10px rgba(22,199,90,.65)}
+input,select{background:rgba(255,255,255,.03);border:1px solid var(--bd);color:var(--fg);border-radius:8px;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus{border-color:var(--pri);box-shadow:0 0 0 3px rgba(22,199,90,.16);outline:0}select option{background:#0a120d}
+input[type=range]{accent-color:#16c75a;background:none;border:0;box-shadow:none}
+.drop{border:1.5px dashed rgba(22,199,90,.35);border-radius:12px;background:rgba(22,199,90,.03);transition:all .2s}.drop:hover,.drop.over{border-color:var(--pri);background:rgba(22,199,90,.08);box-shadow:0 0 24px -8px rgba(22,199,90,.55)}.drop.ok{border-style:solid;border-color:var(--pri);color:var(--pri)}
+.tw{border:1px solid var(--bd);border-radius:12px}th{background:#07110b;color:var(--mut);font-weight:500}td{border-top:1px solid var(--bd)}tbody tr{transition:background .15s}tbody tr:hover td{background:rgba(22,199,90,.07)}
+.b{color:var(--mut)!important;opacity:.85}
+.steps .d{color:var(--fg)}.steps i{border-color:var(--gb)}.steps .d i{background:var(--pri);color:#03110a;border-color:var(--pri)}
+.good{color:var(--pri)}.toast{background:#0b1d12;border:1px solid var(--pri);color:#fff;border-radius:8px}
+.mut{color:var(--mut)}
+@media(min-width:1000px){body{padding-left:240px}header{position:fixed;top:0;left:0;bottom:0;width:240px;flex-direction:column;align-items:flex-start;flex-wrap:nowrap;gap:6px;padding:28px 18px;border-bottom:0;border-right:1px solid var(--gb)}header .logo{margin-bottom:22px}nav{display:flex;flex-direction:column;width:100%;gap:4px}nav a{display:block;margin:0;padding:10px 12px;border-radius:10px;border:1px solid transparent}nav a.on{background:rgba(22,199,90,.1);border-color:var(--gb);box-shadow:0 0 22px -10px rgba(22,199,90,.6)}.st{margin:auto 0 0}}
+@media(max-width:600px){h1{font-size:34px}main::before{width:420px;height:260px;opacity:.7}}
+</style></head><body>
+<header><a class="logo disp" href="#intake">Fin<em>Twin</em></a>
+<nav><a href="#intake" id="n-intake">1 · Intake</a><a href="#overview" id="n-overview">2 · Overview</a><a href="#lab" id="n-lab">3 · Scenario Lab</a><a href="#explore" id="n-explore">4 · Explore</a></nav>
+<div class="st mono" id="status"></div><button class="lang" onclick="setLang()">EN · हिं</button></header>
+<main id="app"></main>
+<footer style="max-width:1200px;margin:0 auto;padding:16px 20px;font-size:12px;color:var(--mut)">Decision-support only, not financial advice. Projections rely solely on the files and figures you provide and the assumptions listed on each screen. Hover any badge to see a number’s source.</footer>
+<script>
+const SM=`date,description,amount,balance`;
+const MON=[[290939,159753,66761,18489,12922],[280312,131809,64359,12324,12289],[332011,157929,63856,15636,13262],[330343,167218,78132,14828,9869],[294304,148101,61680,16264,11226],[285353,141603,80306,16745,12050]];
+function sampleStatement(){let bal=850000,out=[SM];MON.forEach((m,i)=>{const mm=String(i+5).padStart(2,"0");[["02","Office rent",-65000],["05","Client payment Acme Ltd",m[0]],["07","Salary payroll",-180000],["12","Internet subscription",-4500],["15","Client payment Nova Retail",m[1]],["18","Raw materials supplier",-m[2]],["22","Courier and logistics",-m[3]],["27","Utilities electricity",-m[4]]].forEach(r=>{bal+=r[2];out.push(`2026-${mm}-${r[0]},${r[1]},${r[2]},${bal}`)})});return out.join("\n")}
+const SAMPLE_INV=`invoice_id,client,amount,due_date,status
+INV-101,Acme Ltd,210000,2026-11-20,confirmed
+INV-102,Nova Retail,95000,2026-12-10,expected
+INV-103,Zenith Foods,140000,2027-01-15,expected
+INV-104,Acme Ltd,180000,2027-02-05,confirmed`;
+const CLS=[["income","Income"],["fixed","Fixed cost"],["variable","Variable cost"],["one_off","One-off"],["transfer","Transfer"]];
+const S={txns:[],inv:[],stName:null,invName:null,confirmed:false,opening:null,vendor:{price:null,im:null,imk:null},loan:{p:null,apr:null,term:null,fee:null},reserve:2,stress:{drop:0,delay:0,shock:0,sm:3},confOnly:false,sel:null,errs:[],saved:[]};
+let LANG='en';try{S.saved=JSON.parse(localStorage.getItem('ct_saved')||'[]');LANG=localStorage.getItem('ct_lang')||'en'}catch(e){}
+const inr=n=>(n<0?"−₹":"₹")+Math.abs(Math.round(n)).toLocaleString("en-IN");
+const SRC={statement:["STMT","From bank statement","--c3"],invoices:["INV","From invoices","--c2"],user:["USER","You entered this","--c4"],engine:["ENG","Calculated by engine","--pri"],assumption:["ASSUME","Assumption","--mut"],mc:["MC","Monte Carlo simulation","--warn"]};
+const bdg=(s,d)=>`<span class="b" style="color:var(${SRC[s][2]})" title="${SRC[s][1]}: ${String(d).replace(/"/g,"&quot;")}">${SRC[s][0]}</span>`;
+const T=(v,s,d)=>({v,s,d});
+const num=(t,f="inr")=>`<span class="mono">${f=="months"?(isFinite(t.v)?t.v.toFixed(1)+" mo":"No burn"):inr(t.v)}</span>${bdg(t.s,t.d)}`;
+
+// ---------- CSV ----------
+function rows(text){const L=text.trim().split(/\r?\n/);const h=L.shift().split(",").map(x=>x.trim().toLowerCase().replace(/\s+/g,"_"));return L.filter(l=>l.trim()).map(l=>{const c=l.split(",");const o={};h.forEach((k,i)=>o[k]=(c[i]??"").trim());return o})}
+const pn=v=>{if(v==null||String(v).trim()==="")return null;const n=Number(String(v).replace(/[₹,\s]/g,""));return isFinite(n)?n:null};
+function nd(v){v=(v||"").trim();if(/^\d{4}-\d{2}-\d{2}/.test(v))return v.slice(0,10);const m=v.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$/);return m?`${m[3]}-${m[2].padStart(2,"0")}-${m[1].padStart(2,"0")}`:null}
+function classify(d,a){d=d.toLowerCase();if(/transfer|self|own a\/c|sweep/.test(d))return"transfer";if(a>0)return/refund|reversal|loan disb|capital/.test(d)?"one_off":"income";if(/rent|salary|payroll|emi|insurance|subscription|internet|lease/.test(d))return"fixed";if(/purchase|equipment|deposit|tax|penalty/.test(d))return"one_off";return"variable"}
+function parseStatement(t){const r=rows(t),e=[],o=[];if(!r.length)return{o,e:["Empty file"]};const c=Object.keys(r[0]);if(!c.includes("date"))e.push("Missing column: date");if(!c.includes("description")&&!c.includes("narration"))e.push("Missing column: description");if(!c.includes("amount")&&!c.includes("credit")&&!c.includes("debit"))e.push("Missing column: amount (or credit/debit)");if(e.length)return{o,e};
+r.forEach((x,i)=>{const d=nd(x.date),a=c.includes("amount")?pn(x.amount):(pn(x.credit)||0)-(pn(x.debit)||0);if(!d||a===null){e.push(`Row ${i+2}: unreadable date or amount`);return}const ds=x.description||x.narration||"";o.push({id:"t"+i,date:d,desc:ds,amt:a,bal:pn(x.balance),cls:classify(ds,a)})});o.sort((a,b)=>a.date.localeCompare(b.date));return{o,e}}
+function parseInvoices(t){const r=rows(t),e=[],o=[];if(!r.length)return{o,e:["Empty file"]};["amount","due_date"].forEach(k=>{if(!(k in r[0]))e.push("Missing column: "+k)});if(e.length)return{o,e};
+r.forEach((x,i)=>{const d=nd(x.due_date),a=pn(x.amount);if(!d||a===null){e.push(`Row ${i+2}: unreadable due_date or amount`);return}o.push({id:x.invoice_id||"INV-"+(i+1),client:x.client||x.customer||"",amt:a,due:d,st:/confirm|approved|po|committed|paid/.test((x.status||"").toLowerCase())?"confirmed":"expected"})});return{o,e}}
+
+// ---------- Engine ----------
+const MN=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const addM=(k,n)=>{const [y,m]=k.split("-").map(Number);const i=y*12+m-1+n;return`${Math.floor(i/12)}-${String(i%12+1).padStart(2,"0")}`};
+const mdiff=(a,b)=>{const [y1,m1]=a.split("-").map(Number),[y2,m2]=b.split("-").map(Number);return(y2-y1)*12+m2-m1};
+const lbl=k=>MN[+k.slice(5,7)-1]+" "+k.slice(2,4);
+let CACHE={},engMs=0;
+function compute(){const t0=performance.now();const key=JSON.stringify([S.txns,S.inv,S.confirmed,S.opening,S.vendor,S.loan,S.reserve,S.stress,S.confOnly]);if(CACHE.k===key)return CACHE.r;const r=run();CACHE={k:key,r};engMs=performance.now()-t0;return r}
+function run(){
+const X=S.txns,V=S.vendor,L=S.loan,miss=[];const mk=[...new Set(X.map(x=>x.date.slice(0,7)))].sort(),n=mk.length;
+if(!X.length)miss.push("bank_statement.csv has not been uploaded.");else{if(n<2)miss.push(`Statement covers ${n} month; at least 2 are needed.`);if(!S.confirmed)miss.push("Row classification has not been confirmed on the Intake screen.");if(!X.some(x=>x.cls==="income"))miss.push("No statement rows are classified as income.")}
+const lb=[...X].reverse().find(x=>x.bal!==null)?.bal??null;
+if(X.length&&lb===null&&S.opening===null)miss.push("Current cash balance: enter today’s balance on the Intake screen.");
+if(!(V.price>0))miss.push("Vendor quote: purchase price.");
+const ls=[L.p,L.apr,L.term].some(v=>v!==null);if(ls){if(!L.p)miss.push("Loan offer: principal.");if(L.apr===null)miss.push("Loan offer: APR %.");if(!L.term)miss.push("Loan offer: term in months.")}
+if(miss.length)return{miss};
+const H=12,sk=addM(mk[n-1],1),labels=Array.from({length:H},(_,i)=>lbl(addM(sk,i)));
+const sum=c=>X.filter(x=>x.cls===c).reduce((a,x)=>a+x.amt,0);
+const aI=sum("income")/n,aF=-sum("fixed")/n,aV=-sum("variable")/n,aC=aF+aV;
+const cash=lb!==null?lb:S.opening,reserve=S.reserve*aC,surplus=aI-aC,runway=aC>0?cash/aC:Infinity;
+const mi=mk.map(k=>X.filter(x=>x.cls==="income"&&x.date.slice(0,7)===k).reduce((a,x)=>a+x.amt,0));
+const im=mi.reduce((a,b)=>a+b,0)/n,is=Math.sqrt(mi.reduce((a,b)=>a+(b-im)**2,0)/Math.max(1,n-1));
+const drop=1-S.stress.drop/100,dm=Math.round(S.stress.delay/30);
+const ibm=st=>{const a=Array(H).fill(0);S.inv.forEach(v=>{if(v.st!==st)return;const i=Math.max(0,mdiff(sk,v.due.slice(0,7)))+dm;if(i<H)a[i]+=v.amt*drop});return a};
+const conf=ibm("confirmed"),exp=S.confOnly?Array(H).fill(0):ibm("expected");
+const zero=()=>({i:Array(H).fill(0),o:Array(H).fill(0)});
+function sim(s,rr=Array(H).fill(im*drop),ex=exp){let open=cash;return labels.map((label,i)=>{const shock=S.stress.sm===i+1?S.stress.shock:0;const inflow=rr[i]+conf[i]+ex[i]+s.i[i],outflow=aC+s.o[i]+shock,closing=open+inflow-outflow;const m={label,opening:open,rr:rr[i],conf:conf[i],exp:ex[i],fin:s.i[i],inflow,ops:aC,plan:s.o[i],shock,outflow,closing,breach:closing<reserve};open=closing;return m})}
+const P=V.price,defs=[],starts=[1,2,3,4,6,9];
+starts.forEach(m=>{const s=zero();s.o[m-1]+=P;defs.push({id:"cash-m"+m,kind:"cash",label:"Pay cash in "+labels[m-1],start:m,cost:0,cd:"No financing cost",s})});
+if(V.im>0){const k=V.im,tot=P*(1+(V.imk||0)/100);starts.forEach(m=>{const s=zero();for(let j=0;j<k;j++)if(m-1+j<H)s.o[m-1+j]+=tot/k;defs.push({id:"inst-m"+m,kind:"inst",label:`${k} vendor instalments from ${labels[m-1]}`,start:m,cost:tot-P,cd:`Vendor markup ${V.imk||0}%`,s})})}
+if(ls){const pr=L.p,k=L.term,r=L.apr/1200,emi=r===0?pr/k:pr*r*(1+r)**k/((1+r)**k-1),fee=pr*(L.fee||0)/100;starts.forEach(m=>{const s=zero();s.i[m-1]+=pr;s.o[m-1]+=P+fee;for(let j=1;j<=k;j++)if(m-1+j<H)s.o[m-1+j]+=emi;defs.push({id:"loan-m"+m,kind:"loan",label:"Loan-funded purchase in "+labels[m-1],start:m,cost:emi*k-pr+fee,cd:`Interest over ${k} months at ${L.apr}% APR + ${L.fee||0}% fee`,s})})}
+const plans=defs.map(d=>{const months=sim(d.s),mn=Math.min(...months.map(x=>x.closing)),br=months.filter(x=>x.breach).map(x=>x.label);return{id:d.id,label:d.label,start:d.start,cost:T(d.cost,d.cost===0?"user":"engine",d.cd),min:T(mn,"engine","Lowest projected month-end balance"),head:T(mn-reserve,"engine","Lowest balance minus reserve"),br,safe:!br.length,months}});
+const safe=plans.filter(p=>p.safe),pick=f=>safe.length?[...safe].sort(f)[0]:null;
+const fast=pick((a,b)=>a.start-b.start||a.cost.v-b.cost.v),safest=pick((a,b)=>b.head.v-a.head.v),cheap=pick((a,b)=>a.cost.v-b.cost.v||a.start-b.start);
+const rejected=plans.filter(p=>!p.safe).map(p=>{const lo=[...p.months].sort((a,b)=>a.closing-b.closing)[0];return{id:p.id,label:p.label,why:[`Falls below the ${inr(reserve)} reserve in ${p.br.length} month(s): ${p.br.join(", ")}.`,`Lowest balance ${inr(lo.closing)} in ${lo.label}.`]}});
+if(!ls)rejected.push({label:"Loan-funded purchase",why:["No loan offer was entered."]});if(!V.im)rejected.push({label:"Vendor instalments",why:["Vendor quote has no instalment option."]});
+const mc=n>=3&&is>0,bands={},RUNS=300;
+if(mc){const tg=[{id:"original",s:zero()}];[fast,safest,cheap].forEach(p=>{if(p&&!tg.some(x=>x.id===p.id))tg.push({id:p.id,s:defs.find(d=>d.id===p.id).s})});
+tg.forEach(t=>{let seed=1234567;const rnd=()=>{seed|=0;seed=seed+0x6d2b79f5|0;let x=Math.imul(seed^seed>>>15,1|seed);x=x+Math.imul(x^x>>>7,61|x)^x;return((x^x>>>14)>>>0)/4294967296};const gs=()=>Math.sqrt(-2*Math.log(1-rnd()))*Math.cos(2*Math.PI*rnd());
+const paths=[];for(let r=0;r<RUNS;r++){const rr=labels.map(()=>Math.max(0,(im+is*gs())*drop)),ex=exp.map(v=>rnd()<.75?v:0);paths.push(sim(t.s,rr,ex).map(x=>x.closing))}
+const q=(i,p)=>paths.map(a=>a[i]).sort((a,b)=>a-b)[Math.floor(p*(RUNS-1))];bands[t.id]={p10:labels.map((_,i)=>q(i,.1)),p50:labels.map((_,i)=>q(i,.5)),p90:labels.map((_,i)=>q(i,.9))}})}
+return{ok:1,n,labels,ov:{cash:lb!==null?T(cash,"statement","Closing balance on last statement row"):T(cash,"user","Balance entered on Intake"),surplus:T(surplus,"engine",`Avg income − avg costs over ${n} months`),reserve:T(reserve,"engine",`${S.reserve} × avg monthly costs`),runway:T(runway,"engine","Cash ÷ avg monthly costs, zero revenue"),aI:T(aI,"statement",`Income rows ÷ ${n} months`),aC:T(aC,"statement",`Fixed + variable rows ÷ ${n} months`)},original:sim(zero()),plans,rank:{fast:fast?.id,safest:safest?.id,cheap:cheap?.id},rejected,mc:{on:mc,runs:RUNS,reason:mc?`${RUNS} runs; income sampled from history; expected invoices paid with 75% probability`:n<3?`Needs at least 3 months of history (have ${n}).`:"No month-to-month income variation to sample.",bands},
+assum:[["assumption",`Future monthly income = historical average of income rows (${inr(aI)}), less the revenue-drop stress.`],["assumption","Fixed and variable costs continue at their historical monthly average."],["assumption","One-off and transfer rows are excluded from run-rate estimates."],["invoices",S.inv.length?`${S.inv.length} invoices placed in their due month, shifted by the payment-delay stress.`:"No invoices uploaded; statement run-rate only."],["user",S.confOnly?"Only confirmed invoices are counted.":"Expected invoices are counted as received on time."],["user",`Reserve = ${S.reserve} month(s) of average costs; any month-end below it is a breach.`],["assumption","Purchases considered in month 1, 2, 3, 4, 6 or 9. Loan EMI starts the month after disbursal."]]}}
+
+// ---------- Phase 2/3 engine extras ----------
+function backtest(){const X=S.txns;if(!X.length||!S.confirmed)return null;const mk=[...new Set(X.map(x=>x.date.slice(0,7)))].sort();if(mk.length<3)return null;
+const A=mk.map(k=>{const g=c=>X.filter(x=>x.cls===c&&x.date.slice(0,7)===k).reduce((a,x)=>a+x.amt,0);return{i:g('income'),c:-(g('fixed')+g('variable'))}}),o=[];
+for(let i=2;i<mk.length;i++){const p=A.slice(0,i),fi=p.reduce((a,x)=>a+x.i,0)/i;o.push({label:lbl(mk[i]),fi,ai:A[i].i,err:Math.abs(fi-A[i].i)/A[i].i*100})}
+return{rows:o,mape:o.reduce((a,x)=>a+x.err,0)/o.length}}
+function sens(){const r=compute();if(!r.ok)return null;const id=selected(r)[0]||r.rank.fast||r.plans[0].id,pl=r.plans.find(p=>p.id===id),base=pl.min.v,sv=JSON.stringify(S.stress);
+const t=f=>{f(S.stress);const q=run();S.stress=JSON.parse(sv);return q.ok?q.plans.find(p=>p.id===id).min.v-base:0};
+return{label:pl.label,rows:[['Revenue ±10 pts',s=>s.drop=Math.min(60,s.drop+10),s=>s.drop=Math.max(0,s.drop-10)],['Payment delay ±30 days',s=>s.delay+=30,s=>s.delay=Math.max(0,s.delay-30)],['Shock ±₹1,00,000',s=>s.shock+=1e5,s=>s.shock=Math.max(0,s.shock-1e5)]].map(x=>({n:x[0],worse:t(x[1]),better:t(x[2])}))}}
+function persist(){try{localStorage.setItem('ct_saved',JSON.stringify(S.saved))}catch(e){}}
+function saveSc(){const r=compute();if(!r.ok)return;const g=k=>r.rank[k]&&r.plans.find(p=>p.id===r.rank[k]),f=g('fast'),c=g('cheap'),s=g('safest');
+S.saved.push({name:'Scenario '+(S.saved.length+1),stress:{...S.stress},conf:S.confOnly,fast:f?f.label:null,cheapCost:c?c.cost.v:null,head:s?s.head.v:null});persist();
+const e=document.createElement('div');e.className='toast';e.textContent='Scenario saved. Compare it under Explore.';document.body.append(e);setTimeout(()=>e.remove(),2400)}
+function loadSc(i){S.stress={...S.saved[i].stress};S.confOnly=S.saved[i].conf;location.hash='#lab'}
+function delSc(i){S.saved.splice(i,1);persist();go()}
+function setLang(){LANG=LANG==='en'?'hi':'en';try{localStorage.setItem('ct_lang',LANG)}catch(e){}go()}
+const D={'1 · Intake':'१ · इनटेक','2 · Overview':'२ · अवलोकन','3 · Scenario Lab':'३ · परिदृश्य लैब','4 · Explore':'४ · विश्लेषण','Step 1 of 4':'चरण १/४','Step 2 of 4':'चरण २/४','Step 3 of 4 · Digital twin':'चरण ३/४ · डिजिटल ट्विन','Phase 2 · Analysis':'चरण २ · विश्लेषण','Bring in your numbers':'अपने आँकड़े जोड़ें','Financial overview':'वित्तीय अवलोकन','Scenario Lab':'परिदृश्य लैब','Explore':'विश्लेषण','Load sample data':'नमूना डेटा लोड करें','Upload statement':'स्टेटमेंट अपलोड करें','Add vendor quote':'विक्रेता कोटेशन जोड़ें','Confirm rows':'पंक्तियाँ पुष्ट करें','Bank statement':'बैंक स्टेटमेंट','Invoices (optional)':'इनवॉइस (वैकल्पिक)','Choose a CSV file':'CSV फ़ाइल चुनें','Vendor quote':'विक्रेता का कोटेशन','Loan offer':'ऋण प्रस्ताव','Safety settings':'सुरक्षा सेटिंग','Purchase price (₹)':'खरीद मूल्य (₹)','Instalments (months)':'किस्तें (माह)','Instalment markup (%)':'किस्त पर मार्कअप (%)','Principal (₹)':'मूलधन (₹)','APR (%)':'वार्षिक ब्याज दर (%)','Term (months)':'अवधि (माह)','Fee (%)':'शुल्क (%)','Cash reserve to protect (months of costs)':'सुरक्षित रखने योग्य रिज़र्व (माह के खर्च)','Review row classification':'पंक्तियों का वर्गीकरण जाँचें','Date':'तारीख','Description':'विवरण','Amount':'राशि','Class':'श्रेणी','Confirmed':'पुष्ट','Still missing':'अभी भी अनुपलब्ध','Cash today':'आज का नकद','Monthly surplus':'मासिक बचत','Reserve to protect':'सुरक्षित रिज़र्व','Runway':'रनवे','Open Scenario Lab →':'परिदृश्य लैब खोलें →','Monthly run-rate':'मासिक औसत','Average income':'औसत आय','Average costs':'औसत खर्च','Surplus':'बचत','Stress controls':'तनाव नियंत्रण','Revenue drop':'राजस्व में गिरावट','Payment delay':'भुगतान में देरी','Shock amount (₹)':'अचानक खर्च (₹)','Shock month':'खर्च का माह','Confirmed inflows only':'केवल पुष्ट आय','Reset stress':'रीसेट','Save scenario':'परिदृश्य सहेजें','Month-end balance':'माह-अंत शेष','Fastest safe':'सबसे तेज़ सुरक्षित','Safest':'सबसे सुरक्षित','Cheapest':'सबसे सस्ता','Extra cost':'अतिरिक्त लागत','Lowest balance':'न्यूनतम शेष','Above reserve':'रिज़र्व से ऊपर','Rejected plans and why':'अस्वीकृत योजनाएँ और कारण','Assumptions':'मान्यताएँ','Not enough data to run the plan':'योजना चलाने के लिए पर्याप्त डेटा नहीं है','Go to Intake':'इनटेक पर जाएँ','Export results.json':'results.json निर्यात करें','Cost vs cushion':'लागत बनाम सुरक्षा-गद्दी','Sensitivity (tornado)':'संवेदनशीलता (टॉरनेडो)','Saved scenarios':'सहेजे गए परिदृश्य','Backtest: forecast vs actual':'बैकटेस्ट: पूर्वानुमान बनाम वास्तविक','Decision-support only, not financial advice. Projections rely solely on the files and figures you provide and the assumptions listed on each screen. Hover any badge to see a number’s source.':'केवल निर्णय-सहायता, वित्तीय सलाह नहीं। अनुमान केवल आपकी दी गई फ़ाइलों, आँकड़ों और हर स्क्रीन पर सूचीबद्ध मान्यताओं पर आधारित हैं। किसी भी संख्या का स्रोत देखने के लिए बैज पर होवर करें।'};
+function post(){document.querySelectorAll('.eyebrow').forEach(e=>{if(!e.children.length&&e.textContent.includes(' of 3'))e.textContent=e.textContent.replace(' of 3',' of 4')});
+const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode()){if(n.parentNode.closest('script,style,.js-plotly-plot'))continue;if(n._o===undefined)n._o=n.nodeValue;const k=n._o.trim(),h=LANG==='hi'&&D[k];n.nodeValue=h?n._o.replace(k,h):n._o}document.documentElement.lang=LANG}
+if(!window.Plotly)window.Plotly={react(id,d){const el=document.getElementById(id);if(!el)return;const L=d.filter(t=>t.y&&t.mode&&t.mode.includes('lines')&&t.name&&!t.hoverinfo),ys=L.flatMap(t=>t.y),lo=Math.min(...ys),hi=Math.max(...ys);
+if(!L.length||!isFinite(lo)){el.innerHTML='<p class="mut">Chart library unavailable offline. Figures remain in the tables.</p>';return}
+const W=700,H=300,sx=i=>40+i*(W-60)/Math.max(1,L[0].y.length-1),sy=v=>H-20-(v-lo)/((hi-lo)||1)*(H-40),cs=['#16c75a','#7ee8a8','#3fb7a4','#b8c7bd'];
+el.innerHTML=`<svg viewBox='0 0 ${W} ${H}' style='width:100%'>${L.map((t,j)=>`<polyline fill='none' stroke='${cs[j%4]}' stroke-width='2' points='${t.y.map((v,i)=>sx(i)+','+sy(v)).join(' ')}'/>`).join('')}</svg><div class='mut'>${L.map(t=>t.name).join(' · ')} (offline view)</div>`}};
+function explore(){const r=compute();if(!r.ok)return head('Phase 2 · Analysis','Explore')+missing(r.miss);const sn=sens(),bt=backtest();
+setTimeout(()=>{const cfg={displayModeBar:false,responsive:true},gr=col('--bd'),sf=r.plans.filter(p=>p.safe),fr=new Set(sf.filter(p=>!sf.some(q=>q!==p&&q.cost.v<=p.cost.v&&q.head.v>=p.head.v&&(q.cost.v<p.cost.v||q.head.v>p.head.v))).map(p=>p.id));
+const pt=(a,n,c,s,o)=>({type:'scatter',mode:'markers',name:n,x:a.map(p=>p.cost.v),y:a.map(p=>p.head.v),text:a.map(p=>p.label),marker:{color:c,size:s,opacity:o},hovertemplate:'<b>%{text}</b><br>Extra cost %{x:,.0f}<br>Above reserve %{y:,.0f}<extra></extra>'});
+const fo=sf.filter(p=>fr.has(p.id)).sort((a,b)=>a.cost.v-b.cost.v);
+Plotly.react('ch-p',[pt(r.plans.filter(p=>!p.safe),'Breaches reserve',col('--c4'),8,.55),pt(sf.filter(p=>!fr.has(p.id)),'Safe, dominated',col('--c3'),9,.8),{...pt(fo,'Pareto frontier',col('--fg'),13,1),mode:'lines+markers',line:{color:col('--fg'),width:1,dash:'dot'}}],lay({h:380,l:{xaxis:{title:'Extra financing cost',tickprefix:'₹',separatethousands:true,gridcolor:gr,zeroline:false},yaxis:{title:'Cushion above reserve',tickprefix:'₹',separatethousands:true,gridcolor:gr},shapes:[{type:'line',xref:'paper',x0:0,x1:1,y0:0,y1:0,line:{color:col('--bad'),dash:'dash',width:1.5}}]}}),cfg);
+if(sn){const R=[...sn.rows].sort((a,b)=>Math.abs(b.worse)+Math.abs(b.better)-Math.abs(a.worse)-Math.abs(a.better)).reverse(),b=(n,k,c)=>({type:'bar',orientation:'h',name:n,y:R.map(x=>x.n),x:R.map(x=>x[k]),marker:{color:c}});
+Plotly.react('ch-t',[b('Worse','worse',col('--bad')),b('Better','better',col('--ok'))],lay({h:280,l:{barmode:'overlay',margin:{l:170,r:20,t:15,b:40},xaxis:{tickprefix:'₹',separatethousands:true,gridcolor:gr,title:'Change in lowest balance'},yaxis:{tickprefix:'',automargin:true,gridcolor:'rgba(0,0,0,0)'}}}),cfg)}
+if(bt)Plotly.react('ch-b',[{type:'bar',name:'Forecast income',x:bt.rows.map(x=>x.label),y:bt.rows.map(x=>x.fi),marker:{color:col('--c4')}},{type:'bar',name:'Actual income',x:bt.rows.map(x=>x.label),y:bt.rows.map(x=>x.ai),marker:{color:col('--fg')}}],lay({h:300,l:{barmode:'group',bargap:.35}}),cfg);post()},0);
+const sv=S.saved.length?`<div class='sc'><table><thead><tr><th>Scenario</th><th>Revenue drop</th><th>Delay</th><th>Shock</th><th>Inflows</th><th>Fastest safe</th><th>Cheapest cost</th><th>Safest cushion</th><th></th></tr></thead><tbody>${S.saved.map((s,i)=>`<tr><td>${s.name}</td><td class='mono'>${s.stress.drop}%${bdg('user','Stress value saved with this scenario')}</td><td class='mono'>${s.stress.delay} d${bdg('user','Stress value saved with this scenario')}</td><td class='mono'>${inr(s.stress.shock)}${bdg('user','Stress value saved with this scenario')}</td><td>${s.conf?'Confirmed only':'All'}</td><td>${s.fast||'—'}</td><td>${s.cheapCost==null?'—':num(T(s.cheapCost,'engine','Engine result saved with this scenario'))}</td><td>${s.head==null?'—':num(T(s.head,'engine','Engine result saved with this scenario'))}</td><td style='white-space:nowrap'><button class='o' onclick='loadSc(${i})'>Load</button> <button class='o' onclick='delSc(${i})'>Delete</button></td></tr>`).join('')}</tbody></table></div>`:`<p class='mut'>No saved scenarios yet. Set the stress controls in the Scenario Lab and press Save scenario.</p>`;
+const bh=bt?`<p class='mut'>Each month is forecast using only earlier months, then compared with what actually happened. Average income error: <span class='mono'>${bt.mape.toFixed(1)}%</span>${bdg('engine','Mean absolute percentage error of the income forecast')}</p><div id='ch-b'></div><div class='sc'><table><thead><tr><th>Month</th><th>Forecast income</th><th>Actual income</th><th>Error</th></tr></thead><tbody>${bt.rows.map(x=>`<tr><td>${x.label}</td><td>${num(T(x.fi,'engine','Average income of all earlier months'))}</td><td>${num(T(x.ai,'statement','Income rows for that month'))}</td><td class='mono'>${x.err.toFixed(1)}%${bdg('engine','|forecast − actual| ÷ actual')}</td></tr>`).join('')}</tbody></table></div>`:`<p class='mut'>Needs at least 3 months of confirmed statement history.</p>`;
+return head('Phase 2 · Analysis','Explore')+`<div class='card' style='margin-bottom:20px'><h3>Cost vs cushion ${bdg('engine','Each dot is a purchase plan evaluated by the engine')}</h3><p class='mut'>Up and to the left is better: lower financing cost, larger cushion above the reserve. The dotted line joins the Pareto-optimal safe plans.</p><div id='ch-p'></div></div>
+<div class='card' style='margin-bottom:20px'><h3>Sensitivity (tornado) ${bdg('engine','Engine re-run with each input nudged')}</h3><p class='mut'>Effect on the lowest balance of: ${sn.label}</p><div id='ch-t'></div></div>
+<div class='card' style='margin-bottom:20px'><h3>Saved scenarios</h3>${sv}</div><div class='card' style='margin-bottom:20px'><h3>Backtest: forecast vs actual</h3>${bh}</div>`}
+// ---------- UI ----------
+const $=id=>document.getElementById(id);
+const ass=a=>`<details class="card"><summary>Assumptions</summary>${a.map(x=>`<div class="row" style="justify-content:flex-start">${bdg(x[0],x[1])}<span>${x[1]}</span></div>`).join("")}</details>`;
+const missing=m=>`<div class="card warn"><h3>Not enough data to run the plan</h3><p class="mut">Nothing is estimated or filled in for you. Missing:</p><ul>${m.map(x=>`<li>${x}</li>`).join("")}</ul><a class="btn" href="#intake">Go to Intake</a></div>`;
+const head=(e,t,x="")=>`<div class="top"><div><div class="eyebrow">${e}</div><h1 class="disp">${t}</h1></div>${x}</div>`;
+function nf(l,v,o,k){return`<label>${l}</label><input inputmode="decimal" value="${v??""}" onchange="setF('${o}','${k}',this.value)">`}
+function setF(o,k,v){const n=pn(v);if(o==="reserve")S.reserve=n??0;else if(o==="opening")S.opening=n;else S[o][k]=n;go()}
+function setText(){}
+async function load(e,kind){const f=e.target.files[0];if(f)ingest(await f.text(),f.name,kind)}
+function ingest(t,name,kind){if(kind==="st"){const r=parseStatement(t);S.errs=r.e;S.txns=r.o;S.stName=r.o.length?name:null;S.confirmed=false}else{const r=parseInvoices(t);S.errs=r.e;S.inv=r.o;S.invName=r.o.length?name:null}go()}
+function dropF(e,k){e.preventDefault();e.currentTarget.classList.remove('over');const f=e.dataTransfer.files[0];if(f)f.text().then(t=>ingest(t,f.name,k))}
+function sample(){ingest(sampleStatement(),"bank_statement.csv","st");ingest(SAMPLE_INV,"invoices.csv","inv");S.vendor={price:600000,im:6,imk:8};S.loan={p:500000,apr:14,term:12,fee:1};S.confirmed=true;go()}
+function intake(){const r=compute(),hb=S.txns.some(t=>t.bal!==null);
+const up=(t,h,nm,c,k)=>`<div class="card"><h3>${t}</h3><div class="mut mono">${h}</div><label class="drop ${nm?"ok":""}" ondragover="event.preventDefault();this.classList.add('over')" ondragleave="this.classList.remove('over')" ondrop="dropF(event,'${k}')">${nm?`✓ ${nm} · ${c} rows${bdg("user","Rows parsed from your uploaded file")}`:"Choose a CSV file"}<input type="file" accept=".csv,text/csv" hidden onchange="load(event,'${k}')"></label></div>`;
+return head("Step 1 of 3","Bring in your numbers",`<div><button class="o" onclick="sample()">Load sample data</button> <a class="btn" href="#${r.ok?"lab":"intake"}" ${r.ok?"":'style="opacity:.45;pointer-events:none"'}>${r.ok?"See ranked plans →":"Complete intake to continue"}</a></div>`)+
+`<div class="steps">${[["Upload statement",S.txns.length>0],["Add vendor quote",S.vendor.price>0],["Confirm rows",S.confirmed]].map((x,i)=>`<span class="${x[1]?"d":""}"><i>${x[1]?"✓":i+1}</i>${x[0]}</span>`).join("")}</div><div class="g g2">${up("Bank statement","date, description, amount | credit/debit, balance?",S.stName,S.txns.length,"st")}${up("Invoices (optional)","invoice_id, client, amount, due_date, status",S.invName,S.inv.length,"inv")}</div>
+${S.errs.length?`<div class="card bad" style="margin-bottom:16px">${S.errs.slice(0,5).map(e=>`<div>• ${e}</div>`).join("")}</div>`:""}
+<div class="g g2"><div class="card"><h3>Vendor quote</h3>${nf("Purchase price (₹)",S.vendor.price,"vendor","price")}${nf("Instalments (months)",S.vendor.im,"vendor","im")}${nf("Instalment markup (%)",S.vendor.imk,"vendor","imk")}</div>
+<div class="card"><h3>Loan offer <span class="mut">(optional)</span></h3>${nf("Principal (₹)",S.loan.p,"loan","p")}${nf("APR (%)",S.loan.apr,"loan","apr")}${nf("Term (months)",S.loan.term,"loan","term")}${nf("Fee (%)",S.loan.fee,"loan","fee")}</div>
+<div class="card"><h3>Safety settings</h3>${nf("Cash reserve to protect (months of costs)",S.reserve,"reserve","")}${S.txns.length&&!hb?nf("Today’s cash balance (₹)",S.opening,"opening",""):""}${hb?'<p class="mut">Cash balance is read from the statement’s balance column.</p>':""}</div></div>
+<div class="card" style="padding:0;overflow:hidden;margin-bottom:16px"><div style="padding:16px"><h3>Review row classification</h3><p class="mut">Rows are pre-sorted by description. Fix anything wrong, then confirm.</p><div class="mono mut">${CLS.map(c=>`${c[1]}: ${S.txns.filter(t=>t.cls===c[0]).length}`).join(" · ")}${bdg("statement","Row counts from your statement")}</div></div>
+${S.txns.length?`<div class="tw"><table><thead><tr><th>Date</th><th>Description</th><th style="text-align:right">Amount</th><th>Class</th></tr></thead><tbody>${S.txns.map(t=>`<tr><td class="mono">${t.date}</td><td>${t.desc}</td><td class="mono ${t.amt<0?"bad":"good"}" style="text-align:right">${inr(t.amt)}${bdg("statement","Bank statement row")}</td><td><select onchange="setCls('${t.id}',this.value)" style="width:auto">${CLS.map(c=>`<option value="${c[0]}" ${c[0]===t.cls?"selected":""}>${c[1]}</option>`).join("")}</select></td></tr>`).join("")}</tbody></table></div>
+<div class="row" style="padding:12px 16px;align-items:center"><span>${S.confirmed?"✓ Classification confirmed.":"The plan won’t run until you confirm."}</span><button ${S.confirmed?"disabled":""} onclick="S.confirmed=true;go()">${S.confirmed?"Confirmed":"Confirm rows"}</button></div>`:`<p class="mut" style="padding:0 16px 20px;text-align:center">Missing: upload bank_statement.csv, or load the sample data.</p>`}</div>
+${r.miss?`<div class="card warn"><h3>Still missing</h3>${r.miss.map(m=>`<div>• ${m}</div>`).join("")}</div>`:""}`}
+function setCls(id,c){const t=S.txns.find(x=>x.id===id);t.cls=c;S.confirmed=false;go()}
+const col=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+function lay(o={}){return{height:o.h||360,margin:{l:75,r:15,t:15,b:40},paper_bgcolor:"rgba(0,0,0,0)",plot_bgcolor:"rgba(0,0,0,0)",font:{family:"Inter",color:col("--fg"),size:12},xaxis:{gridcolor:col("--bd")},yaxis:{gridcolor:col("--bd"),tickprefix:"₹",separatethousands:true},legend:{orientation:"h",y:-.2},...o.l}}
+const resLine=r=>({type:"line",xref:"paper",x0:0,x1:1,y0:r,y1:r,line:{color:col("--bad"),dash:"dash",width:2}});
+function overview(){const r=compute();if(!r.ok)return head("Step 2 of 3","Financial overview")+missing(r.miss);const o=r.ov;
+const tile=(l,t,f,s)=>`<div class="card"><div class="eyebrow">${l}</div><div class="big ${t.v<0?"bad":""}" style="margin-top:6px">${num(t,f)}</div><div class="mut" style="margin-top:6px">${s}</div></div>`;
+setTimeout(()=>Plotly.react("ch-ov",[{type:"scatter",mode:"lines+markers",name:"Projected balance (no purchase)",x:r.labels,y:r.original.map(m=>m.closing),line:{color:col("--pri"),width:3}}],lay({l:{shapes:[resLine(o.reserve.v)]}}),{displayModeBar:false,responsive:true}),0);
+return head("Step 2 of 3","Financial overview",`<a class="btn" href="#lab">Open Scenario Lab →</a>`)+`<div class="g g4">${tile("Cash today",o.cash,"inr","Starting point for every projection")}${tile("Monthly surplus",o.surplus,"inr",`Based on your statement history`)}${tile("Reserve to protect",o.reserve,"inr","Dashed red line on every chart")}${tile("Runway",o.runway,"months","If revenue stopped today")}</div>
+<div class="g" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))"><div class="card" style="grid-column:span 2"><h3>12-month baseline ${bdg("engine","Projected month-end balances, no purchase")}</h3><div id="ch-ov"></div></div>
+<div class="card"><h3>Monthly run-rate</h3><div class="row"><span>Average income</span><span>${num(o.aI)}</span></div><div class="row"><span>Average costs</span><span>${num(o.aC)}</span></div><div class="row" style="border-top:1px solid var(--bd);padding-top:8px;font-weight:600"><span>Surplus</span><span>${num(o.surplus)}</span></div></div></div>${ass(r.assum)}`}
+function lab(){const r=compute();const st=S.stress;
+const sl=(l,id,mn,mx,sp,v,k,fmt)=>`<label style="display:flex;justify-content:space-between"><span>${l}</span><span><span class="mono" id="v-${k}">${fmt(v)}</span>${bdg("user","Stress value you set")}</span></label><input type="range" min="${mn}" max="${mx}" step="${sp}" value="${v}" oninput="setS('${k}',+this.value)">`;
+const side=`<aside class="card" style="height:fit-content"><div class="eyebrow">Stress controls</div><div class="mono mut" id="ms"></div>
+${sl("Revenue drop","",0,60,5,st.drop,"drop",v=>v+"%")}${sl("Payment delay","",0,120,15,st.delay,"delay",v=>v+" days")}
+<label>Shock amount (₹)</label><input inputmode="numeric" value="${st.shock||""}" placeholder="0" onchange="S.stress.shock=pn(this.value)||0;body()">
+${sl("Shock month","",1,12,1,st.sm,"sm",v=>"Month "+v)}
+<label style="display:flex;align-items:center;gap:8px;margin-top:16px"><input type="checkbox" style="width:auto" ${S.confOnly?"checked":""} onchange="S.confOnly=this.checked;body()"> Confirmed inflows only</label>
+<button class="o" style="width:100%;margin-top:12px" onclick="S.stress={drop:0,delay:0,shock:0,sm:3};go()">Reset stress</button><button style="width:100%;margin-top:8px" onclick="saveSc()">Save scenario</button></aside>`;
+const dl=r.ok?`<button class="o" onclick="dlJson()">Export results.json</button>`:"";
+setTimeout(body,0);return head("Step 3 of 3 · Digital twin","Scenario Lab",dl)+`<div class="lab">${side}<div id="labbody" style="min-width:0"></div></div>`}
+function setS(k,v){S.stress[k]=v;const f={drop:v=>v+"%",delay:v=>v+" days",sm:v=>"Month "+v}[k];$("v-"+k).textContent=f(v);body()}
+function dlJson(){const r=compute(),a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(r,null,2)],{type:"application/json"}));a.download="results.json";a.click()}
+function tog(id){const r=compute();const cur=selected(r);S.sel=cur.includes(id)?cur.filter(x=>x!==id):[...cur,id].slice(-4);body()}
+const selected=r=>(S.sel??[...new Set([r.rank.fast,r.rank.safest,r.rank.cheap].filter(Boolean))]).filter(id=>r.plans.some(p=>p.id===id));
+function body(){const el=$("labbody");if(!el)return;const r=compute();if($("ms"))$("ms").innerHTML=`re-ran in ${engMs.toFixed(1)} ms${bdg("engine","Engine recompute time")}`;if(!r.ok){el.innerHTML=missing(r.miss);return}
+const sel=selected(r),by=id=>r.plans.find(p=>p.id===id),rs=r.ov.reserve.v,PC=["--pri","--c2","--c3","--c4"].map(col);
+const series=[{id:"original",name:"Original (no purchase)",m:r.original,c:col("--mut"),dash:"dot"},...sel.map((id,i)=>({id,name:by(id).label,m:by(id).months,c:PC[i%4]}))];
+const hov="<b>%{fullData.name}</b><br>%{x}<br>Opening %{customdata[0]}<br>Inflow %{customdata[1]}<br>Outflow %{customdata[2]}<br>Closing %{customdata[3]}<extra></extra>";
+const data=[];
+if(r.mc.on)series.forEach((s,i)=>{const b=r.mc.bands[s.id];if(!b)return;data.push({type:"scatter",x:r.labels,y:b.p10,mode:"lines",line:{width:0},showlegend:false,hoverinfo:"skip",legendgroup:s.id},{type:"scatter",x:r.labels,y:b.p90,mode:"lines",line:{width:0},fill:"tonexty",fillcolor:s.c+"26",name:s.name+" p10–p90",hoverinfo:"skip",legendgroup:s.id,showlegend:i<2})});
+series.forEach(s=>{data.push({type:"scatter",mode:"lines+markers",name:s.name,x:r.labels,y:s.m.map(m=>m.closing),line:{color:s.c,width:s.id==="original"?2:3,dash:s.dash,shape:"spline",smoothing:.4},marker:{size:5},customdata:s.m.map(m=>[inr(m.opening),inr(m.inflow),inr(m.outflow),inr(m.closing)]),hovertemplate:hov,legendgroup:s.id});const br=s.m.filter(m=>m.breach);if(br.length)data.push({type:"scatter",mode:"markers",x:br.map(m=>m.label),y:br.map(m=>m.closing),marker:{symbol:"x-thin",size:13,line:{width:3,color:col("--bad")}},showlegend:false,hoverinfo:"skip",legendgroup:s.id})});
+const foc=by(sel[0])?.months||r.original,x=foc.map(m=>m.label);
+const bar=(n,y,c,e={})=>({type:"bar",name:n,x,y,marker:{color:c,...e}});
+const fd=[bar("Run-rate income",foc.map(m=>m.rr),col("--ok")+"cc"),bar("Confirmed invoices",foc.map(m=>m.conf),col("--ok")),bar("Expected invoices",foc.map(m=>m.exp),col("--warn")+"40",{line:{color:col("--warn"),width:1},pattern:{shape:"/",fgcolor:col("--warn"),size:6}}),bar("Financing",foc.map(m=>m.fin),col("--c3")+"b3"),bar("Operating costs",foc.map(m=>-m.ops),col("--bad")+"8c"),bar("Plan payments",foc.map(m=>-m.plan),col("--bad")),bar("Shock",foc.map(m=>-m.shock),col("--fg")+"cc")];
+const cards=[["fast","Fastest safe","Earliest purchase that never dips below reserve"],["safest","Safest","Largest lowest-point cushion above reserve"],["cheap","Cheapest","Lowest financing cost among safe plans"]].map(c=>{const p=r.rank[c[0]]&&by(r.rank[c[0]]);return`<button class="card pick ${p&&sel.includes(p.id)?"on":""}" ${p?`onclick="tog('${p.id}')"`:"disabled"}><div class="eyebrow">${c[1]}</div>${p?`<div class="disp" style="font-size:24px;line-height:1.15;margin:6px 0 10px">${p.label}</div><div class="row"><span class="mut">Extra cost</span><span>${num(p.cost)}</span></div><div class="row"><span class="mut">Lowest balance</span><span>${num(p.min)}</span></div><div class="row"><span class="mut">Above reserve</span><span>${num(p.head)}</span></div><div class="mut">${c[2]}</div>`:`<p class="bad">No plan stays above the reserve under this scenario. Reduce stress or see rejected plans.</p>`}</button>`}).join("");
+el.innerHTML=`<div class="card" style="margin-bottom:16px"><div class="row"><h3>Month-end balance ${bdg("engine","Projected closing balance per month")}</h3><span class="mono mut">${r.mc.on?`Monte Carlo · ${r.mc.runs} runs ${bdg("mc",r.mc.reason)}`:"Monte Carlo off — "+r.mc.reason}</span></div><div id="ch-h"></div></div>
+<div class="g g4">${cards}</div>
+<details class="card" style="margin-bottom:16px"><summary>Rejected plans and why</summary>${r.rejected.map(x=>`<div style="padding:10px 0;border-top:1px solid var(--bd)"><div class="row"><b>${x.label}</b>${x.id?`<button class="${sel.includes(x.id)?"":"o"}" onclick="tog('${x.id}')">${sel.includes(x.id)?"On chart":"Show on chart"}</button>`:""}</div>${x.why.map(w=>`<div class="mut">${w} ${bdg("engine","Engine safety check against reserve")}</div>`).join("")}</div>`).join("")}</details>
+<div class="card" style="margin-bottom:16px"><h3>Cash flows · ${by(sel[0])?.label||"Original"} ${bdg("engine","Monthly inflows and outflows used in the projection")}</h3><div id="ch-f"></div></div>${ass(r.assum)}`;
+Plotly.react("ch-h",data,lay({h:430,l:{shapes:[resLine(rs)],annotations:[{xref:"paper",x:1,y:rs,xanchor:"right",yanchor:"bottom",text:"Reserve "+inr(rs),showarrow:false,font:{color:col("--bad"),size:11}}]}}),{displayModeBar:false,responsive:true});
+Plotly.react("ch-f",fd,lay({h:300,l:{barmode:"relative",bargap:.25}}),{displayModeBar:false,responsive:true});post()}
+function go(){const h=(location.hash||"#intake").slice(1),V={intake,overview,lab,explore},v=V[h]?h:"intake";
+["intake","overview","lab","explore"].forEach(k=>$("n-"+k).className=k===v?"on":"");const r=compute();
+$("status").innerHTML=`<span class="dot" style="background:${r.ok?"var(--ok)":"var(--warn)"}"></span>${r.ok?"engine ready":"awaiting data"} · ${engMs.toFixed(1)} ms${bdg("engine","Engine recompute time")}`;
+$("app").innerHTML=V[v]();post()}
+addEventListener("hashchange",go);go();
+</script></body></html>
