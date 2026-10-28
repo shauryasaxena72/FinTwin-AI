@@ -24,6 +24,10 @@ app.add_middleware(
 
 SAMPLES_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "samples")
 
+@app.get("/")
+def read_root():
+    return {"message": "FinTwin-AI API is running successfully!"}
+
 @app.get("/api/v1/results")
 def get_results():
     return {"metrics": {}, "risk": {}, "cashflow": [], "plans": [], "rejected_plans": []}
