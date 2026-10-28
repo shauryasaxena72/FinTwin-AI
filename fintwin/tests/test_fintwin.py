@@ -1,8 +1,8 @@
 import numpy as np
-from fintwin.engine import *
-from fintwin.planner import rank_plans, generate_candidates
-from fintwin.montecarlo import monte_carlo
-from fintwin.copilot import FinTwinAgent
+from engine.core import *
+from planner import rank_plans, generate_candidates
+from montecarlo import monte_carlo
+from copilot import FinTwinAgent
 
 P, D, S = Profile(), Decision(), Scenario()
 

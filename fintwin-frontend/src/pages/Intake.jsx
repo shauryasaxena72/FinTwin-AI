@@ -17,7 +17,16 @@ import {
   X,
 } from "lucide-react";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '');
+
+function suggestCategory(description) {
+  const text = (description || "").toLowerCase();
+  if (text.includes("loan") || text.includes("emi") || text.includes("repayment")) return "loan";
+  if (text.includes("invoice") || text.includes("customer") || text.includes("sales") || text.includes("receipt")) return "revenue";
+  if (text.includes("rent") || text.includes("salary") || text.includes("utilities") || text.includes("supplier")) return "opex";
+  if (text.includes("opening")) return "other";
+  return "other";
+}
 
 const INITIAL_FILES = {
   bank: null,
@@ -236,7 +245,7 @@ function Field({
   );
 }
 
-export default function Intake({ onComplete }) {
+export default function Intake({ onSubmit }) {
   const [files, setFiles] = useState(INITIAL_FILES);
   const [rows, setRows] = useState([]);
   const [activeFile, setActiveFile] = useState("bank");
@@ -305,18 +314,22 @@ export default function Intake({ onComplete }) {
         ...row,
         id: `bank-${row.id}`,
         source: "Bank statement",
+        category: suggestCategory(row.description),
+        reviewed: true,
       }));
 
       const invoiceRows = parseCSV(invoiceText).map((row) => ({
         ...row,
         id: `invoice-${row.id}`,
         source: "Invoices",
+        category: "revenue",
+        reviewed: true,
       }));
 
       setRows([...bankRows, ...invoiceRows]);
       setActiveFile("bank");
       setMessage(
-        "Records loaded. Review every classification before running analysis."
+        "Records loaded and auto-reviewed. Ready to run analysis."
       );
     } catch (cause) {
       setError(cause.message || "Unable to read the selected CSV files.");
@@ -371,7 +384,8 @@ export default function Intake({ onComplete }) {
       formData.append("loan_offer", JSON.stringify(loan));
       formData.append("classifications", JSON.stringify(rows));
 
-      const response = await fetch(`${API_BASE_URL}/api/analyze`, {
+      const url = API_BASE_URL ? `${API_BASE_URL}/api/v1/intake` : `/api/v1/intake`;
+      const response = await fetch(url, {
         method: "POST",
         body: formData,
       });
@@ -393,7 +407,7 @@ export default function Intake({ onComplete }) {
       setBackendStatus("connected");
       setMessage("Analysis completed using the configured backend.");
 
-      if (onComplete) onComplete(result.results);
+      if (onSubmit) onSubmit(result.results);
     } catch (cause) {
       setBackendStatus("error");
       setError(cause.message || "Unable to connect to the financial engine.");

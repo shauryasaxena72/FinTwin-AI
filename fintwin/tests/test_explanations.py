@@ -1,7 +1,7 @@
 
 import pytest
 
-from fintwin.explanations import (
+from explanations import (
     GroundingError,
     check_grounding,
     explain_diagnosis,

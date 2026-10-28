@@ -2,8 +2,8 @@
 
 Shows three scenarios: green (healthy), red (stressed), and mixed (borderline).
 """
-from fintwin.engine import Profile, Decision, Scenario
-from fintwin.copilot import FinTwinAgent
+from engine.core import Profile, Decision, Scenario
+from copilot import FinTwinAgent
 
 SCENARIOS = {
     "GREEN (Healthy)": {

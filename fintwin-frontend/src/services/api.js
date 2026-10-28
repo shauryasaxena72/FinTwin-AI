@@ -1,14 +1,14 @@
-const USE_API = import.meta.env.VITE_USE_API === 'true';
-const BASE_URL = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000').replace(/\/$/, '');
+const USE_API = import.meta.env.VITE_USE_API !== 'false';
+const BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '');
 
 async function request(path, options = {}) {
   if (!USE_API) throw new Error('Backend is not connected yet. Configure VITE_USE_API and implement the matching endpoint.');
-  const response = await fetch(`${BASE_URL}${path}`, options);
+  const url = BASE_URL ? `${BASE_URL}${path}` : path;
+  const response = await fetch(url, options);
   if (!response.ok) throw new Error(`Engine request failed (${response.status}). Check the backend logs and API contract.`);
   return response.json();
 }
 
-// Integration contract placeholders. Align paths and payloads with the engine team before enabling.
 export const api = {
   uploadFiles: async ({ bankStatement, invoices, reviewRows, vendorQuote, loanOffer }) => {
     const body = new FormData();

@@ -13,6 +13,7 @@ from scenarios import *
 from prediction import *
 
 # Optimization & simulation
+from engine.core import *
 from engine import *
 from simulate import *
 from generate import *
@@ -21,3 +22,5 @@ from montecarlo import *
 from copilot import *
 from planner import *
 from bridge import *
+from narrator import *
+from ui_kit import *

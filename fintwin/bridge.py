@@ -4,7 +4,12 @@ Converts between the two data models so both modules can work together.
 """
 from __future__ import annotations
 
-from engine import Profile as FTProfile, Plan as FTPlan, Scenario as FTScenario, Decision as FTDecision, Receivable
+import sys, os
+_parent = os.path.dirname(os.path.abspath(__file__))
+if _parent not in sys.path:
+    sys.path.insert(0, _parent)
+
+from engine.core import Profile as FTProfile, Plan as FTPlan, Scenario as FTScenario, Decision as FTDecision, Receivable
 from data import Profile as TAProfile, Plan as TAPlan, Scenario as TAScenario, Tagged, Inflow, Loan
 
 
