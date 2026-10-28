@@ -18,9 +18,8 @@ htmlcov/
 !fintwin-frontend/package.json
 !fintwin-frontend/package-lock.json
 
-# Frontend dependencies and build output
+# Frontend dependencies
 fintwin-frontend/node_modules/
-fintwin-frontend/dist/
 
 # IDE
 .vscode/
